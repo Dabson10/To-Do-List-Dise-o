@@ -1,0 +1,152 @@
+
+/* :root {
+    --fondo: #0f0a1f;   
+    --card: #1a142e;        
+    --boton: #8b5cf6;    
+    --texto: #f5f3ff;      
+    --input-bg: #120d26;   
+    --borde: #312e81;      
+    --acento: #c4b5fd;  
+} */
+
+:root {
+    --fondo: #f5f3ff;       
+    --card: #ffffff;        
+    --boton: #7c3aed;       
+    --texto: #2e1065;       
+    --input-bg: #f9fafb;    
+    --borde: #ddd6fe;       
+    --acento: #a78bfa;      
+}
+
+
+body{
+    min-width: 100vh;
+    min-height: 100vh;
+    display: flex;
+    margin:0;
+    padding:0;
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.dark-mode{
+    --fondo: #0f0a1f;
+    --card: #1a142e;
+    --boton: #8b5cf6;
+    --texto: #f5f3ff;
+    --input-bg: #120d26;
+    --borde: #312e81;
+}
+
+.contBtnModo{
+    position: absolute; /* Lo saca del flujo para no mover a los demás */
+    bottom: 30px;
+    right: 20px;        /* Ajusta la posición horizontal */
+    z-index: 999;       /* Lo manda hasta enfrente de todo */
+}
+
+.btnModo{
+    background-color: var(--boton);
+    border:none;
+    border-radius: 90%;
+    padding:1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.login-port{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.cont-form{
+    padding:1.3em;
+    border-radius: .5em;
+    background-color: var(--card);
+    border: 1px solid var(--borde);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.cont-form input{
+    font-size: 17px;
+    padding:.5em .7em;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius:.3em;
+    outline: none;
+    color: var(--texto);
+    background-color: var(--input-bg);
+}
+
+.textExtra{
+    font-size: 16px;
+}
+.colorText{
+    color: var(--texto);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Diseño del Formulario de Loggin */
+.cont-log{
+    display:flex;
+    flex-direction: column;
+    gap:.5em;
+}
+
+.inContra{
+    width: 85%;
+}
+.iconCont{
+    fill: var(--boton);
+}
+.contra{
+    /* width: 100%; */
+    display:flex;
+    justify-content: space-between;
+}
+.contra_btn{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+.log-btn{
+    width: 50%;
+    font-size: 16px;
+    padding:.6em 0em;
+    margin:auto;
+    border-radius: .5em;
+    border:none;
+    background-color: var(--boton);
+    cursor: pointer;
+}
+
+/* Formulario de registro */
+.cont-sign{
+    display:flex;
+    flex-direction: column;
+    gap:.5em;
+}
+
+.ocultar{
+    visibility: hidden;
+    opacity: 0;
+    position:absolute;
+    transition: all .5s ease;
+    
+}
+
