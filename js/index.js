@@ -1,3 +1,5 @@
+// import { loginUsuarios } from './api';
+
 document.addEventListener('DOMContentLoaded', ()=>{
 
     //Variables para cambiar el tipo de la contraseña en el Login
@@ -18,10 +20,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     //Variables para cambiar de login.
     //Variables del login
+    //Formulario del login
     const formLog = document.getElementById('formLog');
     const btnCambioLog = document.getElementById('cambioLog');
     
     //Variables de SigIn o crear cuenta.
+    //Formulario de SignIn
     const formSigIn = document.getElementById('formSign')
     const btnCambioSign = document.getElementById('cambioSign');
 
@@ -38,6 +42,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     cambioModo(btnCambio,iconSol, iconLuna);
 
+    //Proceso para realizar el Login y SigIn
+    // formLog.addEventListener('submit', async (e) =>{
+    //     e.preventDefault();
+    //     //
+    //     const datosForm = new FormData(form);
+
+    //     const credenciales = Object.fromEntries(datosForm.entries());
+    //     try{
+    //         const respuesta = await loginUsuarios(credenciales);
+    //         console.log("Mandado", respuesta);
+    //     }catch(error){
+    //         console.log("fallo", error)
+    //     }
+
+        
+    // });
 
 })
 

@@ -21,7 +21,7 @@
 
 
 body{
-    min-width: 100vh;
+    max-width: 100vh;
     min-height: 100vh;
     display: flex;
     margin:0;
@@ -40,10 +40,10 @@ body{
 }
 
 .contBtnModo{
-    position: absolute; /* Lo saca del flujo para no mover a los demás */
+    position: absolute; 
     bottom: 30px;
-    right: 20px;        /* Ajusta la posición horizontal */
-    z-index: 999;       /* Lo manda hasta enfrente de todo */
+    right: 5px;        
+    z-index: 999;      
 }
 
 .btnModo{
@@ -57,13 +57,11 @@ body{
 }
 
 
-
-
 .login-port{
     display:flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100vh;
 }
 
 .cont-form{
@@ -147,6 +145,49 @@ body{
     opacity: 0;
     position:absolute;
     transition: all .5s ease;
+    
+}
+
+/* Dispositivos mas pequeños */
+
+@media (min-width: 320px) and (max-width: 375px){
+    body{
+        font-size: 15px;
+    }
+    .cont-form{
+        padding:.6em;
+    }
+}
+
+@media (min-width: 750px){
+    body{
+        font-size: 16px;
+    }
+    .contBtnModo{
+        bottom: 50px;
+        right: 50px;         
+    }
+}
+
+
+@media (width >= 1200px){
+    body{
+        max-width: 100%;
+        font-size: 16px;
+    }
+    .contBtnModo{
+        bottom: 30px;
+        right: 15px;         
+    }
+    .login-port{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+    .cont-form{
+        padding:3em;
+    }
     
 }
 
