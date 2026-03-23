@@ -22,11 +22,11 @@
                 <h3>To-Do List</h3>
             </div>
             <!-- Formulario para usuarios que cuenten con correo electronico registrado -->
-            <form action="" class="cont-log " id="formLog">
+            <form action="" class="cont-log ocultar" id="formLog">
                 <p>Ingresa tus datos para ingresar al To-Do list</p>
-                <input type="text" placeholder="Email" />
+                <input type="text" name="correo" placeholder="Email" />
                 <div class="contra">
-                    <input type="password" class="inContra" id="inContraLog" placeholder="********" />
+                    <input type="password" name="clave" class="inContra" id="inContraLog" placeholder="********" />
                     <button type="button" class="contra_btn" id="btnContraLog">
                         <!-- Ojo tapado -->
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -49,20 +49,20 @@
 
                     </button>
                 </div>
-
+                <p id="logError"></p>
                 <button type="submit" class="log-btn">Ingresar</button>
                 <p class="textExtra">
                     Si no cuentas con correo <span class="colorText" id="cambioLog">crealo aqui</span>
                 </p>
             </form>
             <!-- Formulario para crear usuario. -->
-            <form action="" class="cont-sign ocultar" id="formSign">
+            <form action="" class="cont-sign " id="formSign">
                 <p>Ingrese sus datos para crear cuenta</p>
-                <input type="text" placeholder="Nombre" />
-                <input type="text" placeholder="Apellidos" />
-                <input type="text" placeholder="Email" />
+                <input type="text" name="nombre" placeholder="Nombre" />
+                <input type="text" name="apellido" placeholder="Apellidos" />
+                <input type="text" name="correo"  placeholder="Email" />
                 <div class="contra">
-                    <input type="password" class="inContra" id="InContraSign" placeholder="********" />
+                    <input type="password" name="clave" class="inContra" id="InContraSign" placeholder="********" />
                     <button type="button" class="contra_btn" id="btnContraSign">
                         <!-- Ojo tapado -->
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -85,6 +85,7 @@
 
                     </button>
                 </div>
+                <p id="mensajeError2"></p>
                 <button type="submit" class="log-btn">Crear cuenta</button>
                 <p class="textExtra">
                     Si ya cuentas con correo <span class="colorText" id="cambioSign">ingresa aqui</span>
@@ -92,6 +93,6 @@
             </form>
         </div>
     </section>
-    <script src="./js/index.js"></script>
+    <script type="module" src="./js/index.js"></script>
 </body>
 </html>

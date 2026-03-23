@@ -1,4 +1,4 @@
-// import { loginUsuarios } from './api';
+import { loginUsuarios, crearUsuarios } from './api.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
@@ -42,24 +42,57 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     cambioModo(btnCambio,iconSol, iconLuna);
 
-    //Proceso para realizar el Login y SigIn
-    // formLog.addEventListener('submit', async (e) =>{
-    //     e.preventDefault();
-    //     //
-    //     const datosForm = new FormData(form);
-
-    //     const credenciales = Object.fromEntries(datosForm.entries());
-    //     try{
-    //         const respuesta = await loginUsuarios(credenciales);
-    //         console.log("Mandado", respuesta);
-    //     }catch(error){
-    //         console.log("fallo", error)
-    //     }
-
-        
-    // });
+    // Proceso para realizar el Login y SigIn
+    const mensajeError = document.getElementById('logError');
+    credencialesLog(formLog, mensajeError)
+    //Proceso para crear un usuario nuevo.
+    const mensajeError2 = document.getElementById('mensajeError2');
+    crearUsu(formSigIn, mensajeError2)
 
 })
+
+function crearUsu(formSigIn, mensajeError){
+    formSigIn.addEventListener('submit', async (e) =>{
+        e.preventDefault();
+        //Obtengo todos los datos del formulario.
+        const datoFormulario = new FormData(formSigIn);
+
+        const usuario = Object.fromEntries(datoFormulario.entries());
+        try{
+            const respuesta = await crearUsuarios(usuario);
+            console.log("Usuario creado", respuesta)
+        }catch(error){
+            mensajeError.textContent = "Correo existente intente con otro";
+            console.log("error de ", error)
+        }
+    })
+}
+
+/**
+ *  Metodo para hacer Log en cuentas existentes.
+ * @param {*} formLog : Elemento HTML que es un formulario o form
+ * @param {*} mensajeError : Elemento HTML que es un P <p>
+ */
+function credencialesLog(formLog, mensajeError){
+    formLog.addEventListener('submit', async (e) =>{
+        e.preventDefault();
+        //
+        const datosForm = new FormData(formLog);
+
+        const credenciales = Object.fromEntries(datosForm.entries());
+        try{
+            const respuesta = await loginUsuarios(credenciales);
+            console.log("Mandado: ", respuesta);
+        }catch(error){
+            mensajeError.textContent = "Datos incorrectos o correo no existente.";
+            // console.log("fallo: ", error)
+        }
+
+        
+    });
+}
+
+
 
 
 function cambioModo(btnCambio, sol, luna){

@@ -16,7 +16,8 @@
     --texto: #2e1065;       
     --input-bg: #f9fafb;    
     --borde: #ddd6fe;       
-    --acento: #a78bfa;      
+    --acento: #a78bfa;   
+    --error: rgb(255, 68, 68);   
 }
 
 
@@ -37,6 +38,9 @@ body{
     --texto: #f5f3ff;
     --input-bg: #120d26;
     --borde: #312e81;
+}
+#logError{
+    color: var(--error);
 }
 
 .contBtnModo{
