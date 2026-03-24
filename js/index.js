@@ -52,6 +52,46 @@ document.addEventListener('DOMContentLoaded', () => {
     //Variables para el dropdown
     const btnMenu = document.getElementById('btnMenu')
     const contOpciones = document.getElementById('opciones')
+    verOpcionesMenu(btnMenu, contOpciones)
+
+    //Activa la seccion de usuario
+    const btnUsuario = document.getElementById('btnUsuario');
+    const contUsuario = document.getElementById('contUsuario');
+    activarPaneles(btnUsuario, contUsuario);
+
+
+    const inFechaInp = document.getElementById('fechaLimieCreate');
+    // const fechaHoy = fechaActual(inFechaInp);
+    inFechaInp.setAttribute('min', fechaActual())
+    inFechaInp.setAttribute('value', fechaActual())
+
+    //Evento para mostrar detalles extra delF
+    const btnMasInfo = document.getElementById('btnFlecha');
+    const contInfo =document.getElementById('contMasInfo');
+
+    masInfo(btnMasInfo, contInfo);
+
+
+});
+
+
+function masInfo(btnMasInfo, contInfo){
+    btnMasInfo.addEventListener('click', () =>{
+        if(contInfo.classList.contains('cerrar')){
+            contInfo.classList.remove('cerrar');
+        }else{
+            contInfo.classList.add('cerrar');
+        }
+    });
+}
+
+function fechaActual(){
+    const hoy = new Date().toISOString().split('T')[0];
+    return hoy;
+}
+
+
+function verOpcionesMenu(btnMenu, contOpciones){
     btnMenu.addEventListener('click', () =>{
 
         if(contOpciones.classList.contains('cerrar')){
@@ -60,10 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             contOpciones.classList.add('cerrar')
         }
     });
+}
 
-    //Activa la seccion de usuario
-    const btnUsuario = document.getElementById('btnUsuario');
-    const contUsuario = document.getElementById('contUsuario');
+function activarPaneles(btnUsuario, contUsuario){
     btnUsuario.addEventListener('click', () =>{
         if(contUsuario.classList.contains('cerrar')){
             //Seccion para cerrar una seccion
@@ -75,9 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contUsuario.classList.remove('cerrar')
         }
     });
-
-
-})
+}
 
 
 /**

@@ -134,9 +134,10 @@
                 <p class="etiquetaF">Tareas</p>
             </div>
         </div>
+        <!-- Contenedores de los usuarios. -->
         <section class="contUsuario cerrar" id="contUsuario">
             <div class="cardUsuario">
-                <div class="contIcUsuario">
+                <form class="contIcUsuario">
                     <!-- SVG del icono del usuario -->
                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
                         <path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z" />
@@ -146,14 +147,94 @@
                     <span>
                         <b>Datos del usuario: </b>
                     </span>
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" name="nombre" disabled>
+                    <label for="nombreEdit">Nombre:</label>
+                    <input type="text" id="nombreEdit" name="nombre" disabled>
 
-                    <label for="apellido">Apellido</label>
-                    <input type="text" name="apellido" disabled>
+                    <label for="apeEdit">Apellido</label>
+                    <input type="text" id="apeEdit" name="apellido" disabled>
+
+                    <label for="idUsuEdit">Id usuario: </label>
+                    <input type="text" name="idUsuEdit" disabled >
                     <button type="button" class="btnDatos" id="btnDatosUsu">Cambiar datos</button>
-                </div>
+                </form>
             </div>
+        </section>
+        <!-- Un mismo contenedor para crear y ver las tareas. -->
+        <section class="contTo-DoGen ">
+            <!-- Contenedor para crear una tarea nueva -->
+            <section class="contCrearTarea cerrar">
+                <div class="cardCrearTar">
+                    <div class="iconNewTarea">
+                        <svg class="svgCont" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                            <path color="#000000"
+                                d="M7.992 0A2.008 2.008 0 0 0 6 2H5c-.657 0-1.178.06-1.617.225-.439.164-.79.461-.998.838-.415.752-.37 1.673-.385 2.931v5.012c.015 1.258-.03 2.179.385 2.932.208.376.56.673.998.838.439.164.96.224 1.617.224h3.133c.021-.05.031-.102.059-.15l.482-.85H5c-.592 0-1.006-.063-1.265-.16-.26-.098-.372-.203-.473-.387C3.06 13.087 3.015 12.259 3 11V6c.015-1.259.06-2.087.262-2.453.101-.184.213-.29.473-.387C3.995 3.062 4.408 3 5 3v.999h6V3c.593 0 1.006.063 1.266.16.26.098.371.203.472.387.202.366.247 1.194.262 2.453v2.832c.31.115.582.323.752.62v.001l.248.438V5.994c-.015-1.258.031-2.179-.385-2.932a1.88 1.88 0 0 0-.998-.837C12.179 2.06 11.657 2 11 2H9.996a2.008 2.008 0 0 0-1.992-2zm.01 1c.559 0 1 .442 1 1a.99.99 0 0 1-1 1 .982.982 0 0 1-.922-.61A1.01 1.01 0 0 1 7.003 2c0-.558.441-1 1-1zM5 6v1h6.012V6zm0 2v1h6.012V8zm-.01 2v1h3v-1z"
+                                font-family="sans-serif" font-weight="400" overflow="visible"
+                                style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;isolation:auto;mix-blend-mode:normal;marker:none"
+                                white-space="normal" />
+                            <path class="warning" color="#000000"
+                                d="M12.48 9.729a.443.443 0 0 0-.36.22l-3.061 5.397a.437.437 0 0 0 .379.654h6.125a.437.437 0 0 0 .379-.654l-3.059-5.397a.442.442 0 0 0-.402-.22zM12 11h1v.168c0 .348-.016.667-.047.957-.03.29-.069.581-.115.875h-.666a12.898 12.898 0 0 1-.125-.875 9.146 9.146 0 0 1-.047-.957zm.5 3a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"
+                                fill="rgb(201, 51, 51)" fill-rule="evenodd" font-family="sans-serif" font-weight="400"
+                                overflow="visible"
+                                style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;isolation:auto;mix-blend-mode:normal"
+                                white-space="normal" />
+                        </svg>
+                    </div>
+                    <p>Nueva tarea</p>
+                    <form class="contInptsCrear">
+                        <label for="inNombreTaraCrear">Tarea:</label>
+                        <input type="text" id="inNombreTaraCrear" placeholder="Estudiar.." required>
+
+                        <label for="">Descripción:</label>
+                        <input type="text" id="inDescCrear" placeholder="Estudiar programación..." required>
+
+                        <label for="">Prioridad</label>
+                        <select class="selector" name="" id="">
+                            <option value="Baja">Baja.</option>
+                            <option value="Media">Media.</option>
+                            <option value="Alta">Alta.</option>
+                        </select>
+                        <label for="">Fecha limite.</label>
+                        <input type="date" id="fechaLimieCreate">
+                        <label for="">Id usuario:</label>
+                        <input type="text" name="id-usuario" placeholder="1">
+                        <button class="crearTarea">Crear Tarea.</button>
+                    </form>
+                </div>
+            </section>
+            <!-- Contenedor de las tareas. -->
+            <main class="contTareas">
+                <div class="cardTareas">
+                    <div class="cab">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z"/></svg>
+                        To-Do
+                    </div>
+                    <!-- Contenedor desplazable para almacenar varias tareas. -->
+                    <div class="contDesplazable">
+                        <!-- Contenedor que tendra la tarea. -->
+                        <div class="contTarea">
+                            <div class="cabTarea">
+                                <div class="contIzq">
+                                    <p>Tarea: <span><b>Programar</b></span></p>
+                                <p>Prioridad: <span>Alta</span></p>
+                                </div>
+                                <svg id="btnFlecha" class="flecha" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
+                            </div>
+                            <div class="contMasInfoTar cerrar" id="contMasInfo">
+                                <div class="fechas">
+                                    <p>Creada: <span>2026-03-20</span></p>
+                                    <p>Limite: <span>2026-03-26</span></p>
+                                </div>
+                                <p>Descripción: <span>Continuar con el proyecto del To-Do list</span></p>
+                                <p class="estado">Estado: <span class="bajo">En proceso</span></p>
+                                <button class="btnCambiarEstado">Cambiar estado</button>
+                            </div>
+                        </div>
+                        <!-- Aqui se agregaran mas de 1 tarea, por lo que deberia ser scroll en y -->
+                        
+                        
+                    </div>
+                </div>
+            </main>
         </section>
     </section>
     <script type="module" src="./js/index.js"></script>
