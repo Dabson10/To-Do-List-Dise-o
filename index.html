@@ -7,30 +7,39 @@
     <title>To-Do List</title>
     <link rel="stylesheet" href="./style/index.css" />
     <link rel="icon" href="./icons/correcto.png" />
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+    <!-- Boton para cambiar el tema de la app. -->
     <div class="contBtnModo">
         <button class="btnModo" id="btnDarkMode">
             <img src="./icons/luna.png" class="" id="lunaIc" alt="">
             <img src="./icons/soleado.png" class="ocultar" id="solIc" alt="">
         </button>
     </div>
-    <section class="login-port">
+    <!-- Login de la app. -->
+    <section class="login-port ocultar" id="panelLogIn">
         <div class="cont-form">
             <div class="info">
                 <h3>To-Do List</h3>
             </div>
             <!-- Formulario para usuarios que cuenten con correo electronico registrado -->
-            <form action="" class="cont-log ocultar" id="formLog">
+            <form action="" class="cont-log " id="formLog">
                 <p>Ingresa tus datos para ingresar al To-Do list</p>
-                <input type="text" name="correo" placeholder="Email" />
+                <input type="text" name="correo" placeholder="Email" autocomplete="username" required />
                 <div class="contra">
-                    <input type="password" name="clave" class="inContra" id="inContraLog" placeholder="********" />
+                    <input type="password" name="clave" class="inContra" id="inContraLog" required
+                        placeholder="********" autocomplete="current-password" />
                     <button type="button" class="contra_btn" id="btnContraLog">
                         <!-- Ojo tapado -->
                         <?xml version="1.0" encoding="UTF-8"?>
-                        <svg id="ojotapado" class="iconCont"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="20">
+                        <svg id="ojotapado" class="iconCont" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            width="19" height="20">
                             <g id="_01_align_center" data-name="01 align center">
                                 <path
                                     d="M23.821,11.181v0a15.736,15.736,0,0,0-4.145-5.44l3.032-3.032L21.293,1.293,18,4.583A11.783,11.783,0,0,0,12,3C4.5,3,1.057,9.261.179,11.181a1.969,1.969,0,0,0,0,1.64,15.736,15.736,0,0,0,4.145,5.44L1.293,21.293l1.414,1.414L6,19.417A11.783,11.783,0,0,0,12,21c7.5,0,10.943-6.261,11.821-8.181A1.968,1.968,0,0,0,23.821,11.181ZM2,12.011C2.75,10.366,5.693,5,12,5a9.847,9.847,0,0,1,4.518,1.068L14.753,7.833a4.992,4.992,0,0,0-6.92,6.92L5.754,16.832A13.647,13.647,0,0,1,2,12.011ZM15,12a3,3,0,0,1-3,3,2.951,2.951,0,0,1-1.285-.3L14.7,10.715A2.951,2.951,0,0,1,15,12ZM9,12a3,3,0,0,1,3-3,2.951,2.951,0,0,1,1.285.3L9.3,13.285A2.951,2.951,0,0,1,9,12Zm3,7a9.847,9.847,0,0,1-4.518-1.068l1.765-1.765a4.992,4.992,0,0,0,6.92-6.92l2.078-2.078A13.584,13.584,0,0,1,22,12C21.236,13.657,18.292,19,12,19Z" />
@@ -38,7 +47,8 @@
                         </svg>
                         <!-- Ojo abierto -->
                         <?xml version="1.0" encoding="UTF-8"?>
-                        <svg id="ojoAbierto" class="iconCont ocultar"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="20">
+                        <svg id="ojoAbierto" class="iconCont ocultar" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" width="19" height="20">
                             <g id="_01_align_center" data-name="01 align center">
                                 <path
                                     d="M23.821,11.181v0C22.943,9.261,19.5,3,12,3S1.057,9.261.179,11.181a1.969,1.969,0,0,0,0,1.64C1.057,14.739,4.5,21,12,21s10.943-6.261,11.821-8.181A1.968,1.968,0,0,0,23.821,11.181ZM12,19c-6.307,0-9.25-5.366-10-6.989C2.75,10.366,5.693,5,12,5c6.292,0,9.236,5.343,10,7C21.236,13.657,18.292,19,12,19Z" />
@@ -56,17 +66,19 @@
                 </p>
             </form>
             <!-- Formulario para crear usuario. -->
-            <form action="" class="cont-sign " id="formSign">
+            <form action="" class="cont-sign ocultar" id="formSign">
                 <p>Ingrese sus datos para crear cuenta</p>
-                <input type="text" name="nombre" placeholder="Nombre" />
-                <input type="text" name="apellido" placeholder="Apellidos" />
-                <input type="text" name="correo"  placeholder="Email" />
+                <input type="text" name="nombre" placeholder="Nombre" required />
+                <input type="text" name="apellido" placeholder="Apellidos" required />
+                <input type="text" name="correo" placeholder="Email" autocomplete="username" required />
                 <div class="contra">
-                    <input type="password" name="clave" class="inContra" id="InContraSign" placeholder="********" />
+                    <input type="password" name="clave" class="inContra" id="InContraSign"
+                        autocomplete="current-password" placeholder="********" required />
                     <button type="button" class="contra_btn" id="btnContraSign">
                         <!-- Ojo tapado -->
                         <?xml version="1.0" encoding="UTF-8"?>
-                        <svg class="iconCont " id="OjoTapado"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="20">
+                        <svg class="iconCont " id="OjoTapado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            width="19" height="20">
                             <g id="_01_align_center" data-name="01 align center">
                                 <path
                                     d="M23.821,11.181v0a15.736,15.736,0,0,0-4.145-5.44l3.032-3.032L21.293,1.293,18,4.583A11.783,11.783,0,0,0,12,3C4.5,3,1.057,9.261.179,11.181a1.969,1.969,0,0,0,0,1.64,15.736,15.736,0,0,0,4.145,5.44L1.293,21.293l1.414,1.414L6,19.417A11.783,11.783,0,0,0,12,21c7.5,0,10.943-6.261,11.821-8.181A1.968,1.968,0,0,0,23.821,11.181ZM2,12.011C2.75,10.366,5.693,5,12,5a9.847,9.847,0,0,1,4.518,1.068L14.753,7.833a4.992,4.992,0,0,0-6.92,6.92L5.754,16.832A13.647,13.647,0,0,1,2,12.011ZM15,12a3,3,0,0,1-3,3,2.951,2.951,0,0,1-1.285-.3L14.7,10.715A2.951,2.951,0,0,1,15,12ZM9,12a3,3,0,0,1,3-3,2.951,2.951,0,0,1,1.285.3L9.3,13.285A2.951,2.951,0,0,1,9,12Zm3,7a9.847,9.847,0,0,1-4.518-1.068l1.765-1.765a4.992,4.992,0,0,0,6.92-6.92l2.078-2.078A13.584,13.584,0,0,1,22,12C21.236,13.657,18.292,19,12,19Z" />
@@ -74,7 +86,8 @@
                         </svg>
                         <!-- Ojo abierto -->
                         <?xml version="1.0" encoding="UTF-8"?>
-                        <svg class="iconCont ocultar" id="OjoAbierto" class="ocultar"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="20">
+                        <svg class="iconCont ocultar" id="OjoAbierto" class="ocultar" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" width="19" height="20">
                             <g id="_01_align_center" data-name="01 align center">
                                 <path
                                     d="M23.821,11.181v0C22.943,9.261,19.5,3,12,3S1.057,9.261.179,11.181a1.969,1.969,0,0,0,0,1.64C1.057,14.739,4.5,21,12,21s10.943-6.261,11.821-8.181A1.968,1.968,0,0,0,23.821,11.181ZM12,19c-6.307,0-9.25-5.366-10-6.989C2.75,10.366,5.693,5,12,5c6.292,0,9.236,5.343,10,7C21.236,13.657,18.292,19,12,19Z" />
@@ -93,6 +106,57 @@
             </form>
         </div>
     </section>
+    <!-- Seccion principal de To-Do -->
+    <section class="panelPrincipal">
+        <!-- Contenedor para iconos, para abir otra seccion flotante. -->
+        <div class="contEsquina ">
+            <!-- Contenedor con los iconos. -->
+            <div class="contIconoMenu">
+                <!-- Menu Hamburguesa -->
+                <svg class="iconoMenu " id="btnMenu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                </svg>
+                <!-- Icono de usuario -->
+                <svg class="iconoMenu cerrar" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path
+                        d="M367-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm296.5-343.5Q560-607 560-640t-23.5-56.5Q513-720 480-720t-56.5 23.5Q400-673 400-640t23.5 56.5Q447-560 480-560t56.5-23.5ZM480-640Zm0 400Z" />
+                </svg>
+                <!-- Icono de To Do -->
+                <svg class="iconoMenu cerrar" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path
+                        d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z" />
+                </svg>
+            </div>
+            <!-- Contenedor con las diferentes opciones. -->
+            <div class="contSecciones cerrar" id="opciones">
+                <p class="etiquetaF" id="btnUsuario">Usuario</p>
+                <p class="etiquetaF">Crear tarea</p>
+                <p class="etiquetaF">Tareas</p>
+            </div>
+        </div>
+        <section class="contUsuario cerrar" id="contUsuario">
+            <div class="cardUsuario">
+                <div class="contIcUsuario">
+                    <!-- SVG del icono del usuario -->
+                    <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
+                        <path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z" />
+                        <path
+                            d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z" />
+                    </svg>
+                    <span>
+                        <b>Datos del usuario: </b>
+                    </span>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" name="nombre" disabled>
+
+                    <label for="apellido">Apellido</label>
+                    <input type="text" name="apellido" disabled>
+                    <button type="button" class="btnDatos" id="btnDatosUsu">Cambiar datos</button>
+                </div>
+            </div>
+        </section>
+    </section>
     <script type="module" src="./js/index.js"></script>
 </body>
+
 </html>

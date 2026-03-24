@@ -1,6 +1,6 @@
 import { loginUsuarios, crearUsuarios } from './api.js';
 
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
 
     //Variables para cambiar el tipo de la contraseña en el Login
     const btnVerCont = document.getElementById('btnContraLog');
@@ -14,16 +14,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const inContraLogSign = document.getElementById('InContraSign');
 
     //Llama a la función para mostrar y ocultar la contraseña en el login.
-    estadoContraseña(btnVerCont, svgNoVerCont,svgVerCont, inContraLog);
+    estadoContraseña(btnVerCont, svgNoVerCont, svgVerCont, inContraLog);
     //Llama a la función para mostrar y ocultar la contraseña en el SigIn.
-    estadoContraseña(btnVerContSign, svgNoVerContSign,svgVerContSign, inContraLogSign);
+    estadoContraseña(btnVerContSign, svgNoVerContSign, svgVerContSign, inContraLogSign);
 
     //Variables para cambiar de login.
     //Variables del login
     //Formulario del login
     const formLog = document.getElementById('formLog');
     const btnCambioLog = document.getElementById('cambioLog');
-    
+
     //Variables de SigIn o crear cuenta.
     //Formulario de SignIn
     const formSigIn = document.getElementById('formSign')
@@ -40,31 +40,83 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const iconSol = document.getElementById('solIc')
     const iconLuna = document.getElementById('lunaIc')
 
-    cambioModo(btnCambio,iconSol, iconLuna);
+    cambioModo(btnCambio, iconSol, iconLuna);
 
     // Proceso para realizar el Login y SigIn
     const mensajeError = document.getElementById('logError');
-    credencialesLog(formLog, mensajeError)
+    credencialesLog(formLog, mensajeError);
     //Proceso para crear un usuario nuevo.
     const mensajeError2 = document.getElementById('mensajeError2');
-    crearUsu(formSigIn, mensajeError2)
+    crearUsu(formSigIn, mensajeError2);
+
+    //Variables para el dropdown
+    const btnMenu = document.getElementById('btnMenu')
+    const contOpciones = document.getElementById('opciones')
+    btnMenu.addEventListener('click', () =>{
+
+        if(contOpciones.classList.contains('cerrar')){
+            contOpciones.classList.remove('cerrar');
+        }else{
+            contOpciones.classList.add('cerrar')
+        }
+    });
+
+    //Activa la seccion de usuario
+    const btnUsuario = document.getElementById('btnUsuario');
+    const contUsuario = document.getElementById('contUsuario');
+    btnUsuario.addEventListener('click', () =>{
+        if(contUsuario.classList.contains('cerrar')){
+            //Seccion para cerrar una seccion
+            contUsuario.classList.remove('cerrar')
+            //Ahora que se cerro la seccion toca ocultar el dropdown
+            contOpciones.classList.add('cerrar')
+        }else{
+            contOpciones.classList.add('cerrar')
+            contUsuario.classList.remove('cerrar')
+        }
+    });
+
 
 })
 
-function crearUsu(formSigIn, mensajeError){
-    formSigIn.addEventListener('submit', async (e) =>{
+
+/**
+ * Función para crear nuevos usuarios, en donde no se repiten correos
+ * electronicos.
+ * @param {*} formSigIn :Elemento HTML del tipo <form>
+ * @param {*} mensajeError  :Elemento HTML del tipo <p>
+ */
+function crearUsu(formSigIn, mensajeError) {
+    formSigIn.addEventListener('submit', async (e) => {
         e.preventDefault();
         //Obtengo todos los datos del formulario.
         const datoFormulario = new FormData(formSigIn);
-
         const usuario = Object.fromEntries(datoFormulario.entries());
-        try{
+        //Elimina espacios iniciales y finales de cadenas en los inputs
+        for(let llave in usuario){
+            usuario[llave] = usuario[llave].trim();
+        }
+        //Si regresa un valor no vacio entonces no mandamos el formulario y mostramos que
+        //inputs faltan por llenar.
+        const valores = validarInputs(usuario);
+        if (valores) {
+            mensajeError.textContent = `Ingrese datos en: ${valores}`;
+            return;
+        }
+        const validado = validarCorreo(usuario);
+        if (!validado) {
+            mensajeError.textContent = "El correo no cumple con el formato.";
+        }
+
+        try {
+            mensajeError.textContent = "";
             const respuesta = await crearUsuarios(usuario);
             console.log("Usuario creado", respuesta)
-        }catch(error){
+        } catch (error) {
             mensajeError.textContent = "Correo existente intente con otro";
             console.log("error de ", error)
         }
+
     })
 }
 
@@ -73,36 +125,71 @@ function crearUsu(formSigIn, mensajeError){
  * @param {*} formLog : Elemento HTML que es un formulario o form
  * @param {*} mensajeError : Elemento HTML que es un P <p>
  */
-function credencialesLog(formLog, mensajeError){
-    formLog.addEventListener('submit', async (e) =>{
+function credencialesLog(formLog, mensajeError) {
+    formLog.addEventListener('submit', async (e) => {
         e.preventDefault();
         //
         const datosForm = new FormData(formLog);
-
+        //Limpia el formulario para que no existan espacios vacios
         const credenciales = Object.fromEntries(datosForm.entries());
-        try{
+        for(let llave in credenciales){
+            credenciales[llave] = credenciales[llave].trim();
+        }
+        const valores = validarInputs(credenciales);
+        //Si regresa un valor no vacio entonces no mandamos el formulario y mostramos que
+        //inputs faltan por llenar.
+        if (valores) {
+            mensajeError.textContent = `Ingrese datos en: ${valores}`;
+            return;
+        }
+        const validado = validarCorreo(credenciales)
+        if (!validado) {
+            mensajeError.textContent = "El correo no cumple con el formato."
+            return;
+        }
+        mensajeError.textContent = "";
+        try {
             const respuesta = await loginUsuarios(credenciales);
             console.log("Mandado: ", respuesta);
-        }catch(error){
+        } catch (error) {
             mensajeError.textContent = "Datos incorrectos o correo no existente.";
             // console.log("fallo: ", error)
         }
-
-        
     });
 }
 
+//Funcion que valida que el usuario relleno los inputs del formulario.
+function validarInputs(datosForm) {
+    let valores = "";
+    for (let llave in datosForm) {
+        if (datosForm[llave].trim() === "") {
+            valores += `${llave} `
+        }
+    }
+    return valores;
+}
+//Función que valida que el corre electronico se escribio correctamente.
+function validarCorreo(datos) {
+    //Valida que los inputs se ingresen datos correctos y el correo sea correcto.
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;;
+    const correo = datos.correo;
+    return regex.test(correo);
+}
 
+/**
+ * Función para cambiar de tema de la app.
+ * @param {*} btnCambio : Boton que hace el cambio.
+ * @param {*} sol : Icono del sol.
+ * @param {*} luna : Icono de la luna.
+ */
+function cambioModo(btnCambio, sol, luna) {
+    btnCambio.addEventListener('click', () => {
 
-
-function cambioModo(btnCambio, sol, luna){
-    btnCambio.addEventListener('click', () =>{
-        
-        if(document.body.classList.contains('dark-mode')){
+        if (document.body.classList.contains('dark-mode')) {
             document.body.classList.toggle('dark-mode')
             sol.classList.add('ocultar')
             luna.classList.remove('ocultar')
-        }else{
+        } else {
             document.body.classList.toggle('dark-mode')
             sol.classList.remove('ocultar')
             luna.classList.add('ocultar')
@@ -117,12 +204,12 @@ function cambioModo(btnCambio, sol, luna){
  * @param {*} formLog : Elemento HTML del tipo form
  * @param {*} formSigIn : Elemento HTML del tipo form
  */
-function cambioFormulario(btnCambio, formLog, formSigIn){
-    btnCambio.addEventListener('click', () =>{
-        if(formLog.classList.contains('ocultar')){
+function cambioFormulario(btnCambio, formLog, formSigIn) {
+    btnCambio.addEventListener('click', () => {
+        if (formLog.classList.contains('ocultar')) {
             formLog.classList.remove('ocultar')
             formSigIn.classList.add('ocultar')
-        }else{
+        } else {
             formLog.classList.add('ocultar')
             formSigIn.classList.remove('ocultar')
         }
@@ -138,17 +225,17 @@ function cambioFormulario(btnCambio, formLog, formSigIn){
  * @param {*} inContraLog : Elemento HTML del tipo input
  */
 
-function estadoContraseña(btnVerCont, svgNoVerCont, svgVerCont, inContraLog){
-    btnVerCont.addEventListener('click', () =>{
-        if(inContraLog.type === "password"){
+function estadoContraseña(btnVerCont, svgNoVerCont, svgVerCont, inContraLog) {
+    btnVerCont.addEventListener('click', () => {
+        if (inContraLog.type === "password") {
             //Si contiene password entonces se lo cambiamos a text.
             inContraLog.type = "text";
             inContraLog.placeholder = "Contraseña";
             svgVerCont.classList.toggle("ocultar");
             svgNoVerCont.classList.toggle('ocultar');
-        }else{
+        } else {
             inContraLog.type = "password";
-            inContraLog.placeholder ="********";
+            inContraLog.placeholder = "********";
             svgNoVerCont.classList.toggle("ocultar");
             svgVerCont.classList.toggle('ocultar');
         }

@@ -1,37 +1,14 @@
-
-/* :root {
-    --fondo: #0f0a1f;   
-    --card: #1a142e;        
-    --boton: #8b5cf6;    
-    --texto: #f5f3ff;      
-    --input-bg: #120d26;   
-    --borde: #312e81;      
-    --acento: #c4b5fd;  
-} */
-
 :root {
-    --fondo: #f5f3ff;       
-    --card: #ffffff;        
-    --boton: #7c3aed;       
-    --texto: #2e1065;       
-    --input-bg: #f9fafb;    
-    --borde: #ddd6fe;       
-    --acento: #a78bfa;   
-    --error: rgb(255, 68, 68);   
+    --fondo: #f5f3ff;
+    --card: #ffffff;
+    --boton: #7c3aed;
+    --texto: #2e1065;
+    --input-bg: #f9fafb;
+    --borde: #ddd6fe;
+    --acento: #a78bfa;
+    --error: rgb(255, 68, 68);
 }
-
-
-body{
-    max-width: 100vh;
-    min-height: 100vh;
-    display: flex;
-    margin:0;
-    padding:0;
-    background-color: var(--fondo);
-    color: var(--texto);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.dark-mode{
+.dark-mode {
     --fondo: #0f0a1f;
     --card: #1a142e;
     --boton: #8b5cf6;
@@ -39,37 +16,56 @@ body{
     --input-bg: #120d26;
     --borde: #312e81;
 }
-#logError{
+
+
+body {
+    max-width: 100vh;
+    min-height: 100vh;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+
+#logError {
     color: var(--error);
 }
 
-.contBtnModo{
-    position: absolute; 
+.contBtnModo {
+    position: absolute;
     bottom: 30px;
-    right: 5px;        
-    z-index: 999;      
+    right: 5px;
+    z-index: 999;
 }
 
-.btnModo{
+.btnModo {
     background-color: var(--boton);
-    border:none;
+    border: none;
     border-radius: 90%;
-    padding:1.1em;
+    padding: 1.1em;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 
-.login-port{
-    display:flex;
+.login-port {
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100vh;
 }
 
-.cont-form{
-    padding:1.3em;
+.cont-form {
+    padding: 1.3em;
     border-radius: .5em;
     background-color: var(--card);
     border: 1px solid var(--borde);
@@ -78,120 +74,224 @@ body{
     align-items: center;
     justify-content: center;
 }
-.cont-form input{
+
+.cont-form input {
     font-size: 17px;
-    padding:.5em .7em;
+    padding: .5em .7em;
     border: none;
     border-bottom: 1px solid var(--border);
-    border-radius:.3em;
+    border-radius: .3em;
     outline: none;
     color: var(--texto);
     background-color: var(--input-bg);
 }
 
-.textExtra{
+.textExtra {
     font-size: 16px;
 }
-.colorText{
+
+.colorText {
     color: var(--texto);
     text-decoration: underline;
     cursor: pointer;
 }
 
 /* Diseño del Formulario de Loggin */
-.cont-log{
-    display:flex;
+.cont-log {
+    display: flex;
     flex-direction: column;
-    gap:.5em;
+    gap: .5em;
 }
 
-.inContra{
+.inContra {
     width: 85%;
 }
-.iconCont{
+
+.iconCont {
     fill: var(--boton);
 }
-.contra{
+
+.contra {
     /* width: 100%; */
-    display:flex;
+    display: flex;
     justify-content: space-between;
 }
-.contra_btn{
-    display:flex;
+
+.contra_btn {
+    display: flex;
     align-items: center;
     justify-content: center;
-    background-color:transparent;
+    background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
 
-.log-btn{
+.log-btn {
     width: 50%;
     font-size: 16px;
-    padding:.6em 0em;
-    margin:auto;
+    padding: .6em 0em;
+    margin: auto;
     border-radius: .5em;
-    border:none;
+    border: none;
     background-color: var(--boton);
     cursor: pointer;
 }
 
 /* Formulario de registro */
-.cont-sign{
+.cont-sign {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+
+
+/*  =============================
+    Diseño para el panel principal. 
+    ==============================*/
+.panelPrincipal{
+    display:flex;
+    width: 100vh;
+}
+
+
+.contEsquina{
+    display:flex;
+    /* background-color: rgb(248, 148, 148); */
+    width: 0 auto  ;
+    margin: 0 0 auto ;
+    padding:.5em;
+    position:absolute
+}
+
+.contIconoMenu{
     display:flex;
     flex-direction: column;
+    fill: var(--texto);
+    padding:.4em;
+}
+
+.iconoMenu{
+    width: 30px;
+}
+.contSecciones{
+    padding: .2em 1em;
+}
+.etiquetaF{
+    border: 0px solid var(--texto);
+    border-width: 0 0 1.5px ;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+/*  =====================
+    Seccion usuarios
+    =====================
+*/
+
+.contUsuario{
+    display:flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardUsuario{
+    display:flex;
+    flex-direction: column;
+    border: 1px solid var(--borde);
+    border-radius:.5em;
+    padding:1em .5em;
+    background-color: var(--card);
+}
+
+.contIcUsuario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap:.5em;
 }
-
-.ocultar{
-    visibility: hidden;
-    opacity: 0;
-    position:absolute;
-    transition: all .5s ease;
-    
+.contIcUsuario svg{
+    fill: var(--borde);
+    width: 50px;
 }
 
+.btnDatos{
+    font-size: 15px;
+    padding: .4em .5em;
+    margin: auto;
+    border-radius: .5em;
+    border: none;
+    background-color: var(--boton);
+    cursor: pointer;
+}
+
+
+label{
+    color: var(--acento);
+    font-size: 13px;
+    align-items: left;
+}
 /* Dispositivos mas pequeños */
 
-@media (min-width: 320px) and (max-width: 375px){
-    body{
+@media (min-width: 320px) and (max-width: 375px) {
+    body {
         font-size: 15px;
     }
-    .cont-form{
-        padding:.6em;
+    .cont-form {
+        padding: .6em;
     }
 }
 
-@media (min-width: 750px){
-    body{
+@media (min-width: 750px) {
+    body {
         font-size: 16px;
     }
-    .contBtnModo{
+
+    .contBtnModo {
         bottom: 50px;
-        right: 50px;         
+        right: 50px;
     }
 }
 
 
-@media (width >= 1200px){
-    body{
+@media (width >=1200px) {
+    body {
         max-width: 100%;
         font-size: 16px;
     }
-    .contBtnModo{
+
+    .contBtnModo {
         bottom: 30px;
-        right: 15px;         
+        right: 15px;
     }
-    .login-port{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-    .cont-form{
-        padding:3em;
+
+    .login-port {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
-    
+
+    .cont-form {
+        padding: 3em;
+    }
+
 }
 
+/* Etiquetas reutilizables. */
+.ocultar {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    transition: all .5s ease;
+
+}
+
+/* No cuenta con transicion, de una se elimina el contenido. */
+.cerrar{
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+}
