@@ -189,15 +189,20 @@ input, .selector{
 
 .iconoMenu {
     width: 30px;
+    fill: var(--icono-principal);
 }
 
 .contSecciones {
     padding: .2em 1em;
+    background-color: var(--card);
+    border:1px solid var(--borde);
+    border-radius:.4em;
 }
 
 .etiquetaF {
-    border: 0px solid var(--texto);
+    border: 0px solid var(--icono-principal);
     border-width: 0 0 1.5px;
+    color:var(--icono-principal);
     line-height: 1.5;
     cursor: pointer;
     padding: 0 1em;
@@ -210,9 +215,10 @@ input, .selector{
 
 .contUsuario {
     display: flex;
-    width: 100%;
+    width: 100vw;
     justify-content: center;
     align-items: center;
+    margin: auto;
 }
 
 .cardUsuario {

@@ -129,13 +129,13 @@
             </div>
             <!-- Contenedor con las diferentes opciones. -->
             <div class="contSecciones cerrar" id="opciones">
-                <p class="etiquetaF" id="btnUsuario">Usuario</p>
-                <p class="etiquetaF">Crear tarea</p>
-                <p class="etiquetaF">Tareas</p>
+                <p class="etiquetaF" data-opcion="usuario" id="btnUsuario">Usuario</p>
+                <p class="etiquetaF" data-opcion="crearTarea">Crear tarea</p>
+                <p class="etiquetaF" data-opcion="verTareas">Tareas</p>
             </div>
         </div>
         <!-- Contenedores de los usuarios. -->
-        <section class="contUsuario cerrar" id="contUsuario">
+        <section class="contUsuario panel " data-panel="usuario" id="contUsuario">
             <div class="cardUsuario">
                 <form class="contIcUsuario">
                     <!-- SVG del icono del usuario -->
@@ -160,9 +160,9 @@
             </div>
         </section>
         <!-- Un mismo contenedor para crear y ver las tareas. -->
-        <section class="contTo-DoGen ">
+        <section class="contTo-DoGen  cerrar" id="panelPadre">
             <!-- Contenedor para crear una tarea nueva -->
-            <section class="contCrearTarea cerrar">
+            <section class="contCrearTarea panel cerrar " data-panel="tarea1" id="tareaNueva">
                 <div class="cardCrearTar">
                     <div class="iconNewTarea">
                         <svg class="svgCont" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -202,7 +202,7 @@
                 </div>
             </section>
             <!-- Contenedor de las tareas. -->
-            <main class="contTareas">
+            <main class="contTareas panel cerrar" data-panel="tarea2" id="tareasList">
                 <div class="cardTareas">
                     <div class="cab">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z"/></svg>

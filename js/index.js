@@ -54,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const contOpciones = document.getElementById('opciones')
     verOpcionesMenu(btnMenu, contOpciones)
 
-    //Activa la seccion de usuario
-    const btnUsuario = document.getElementById('btnUsuario');
-    const contUsuario = document.getElementById('contUsuario');
-    activarPaneles(btnUsuario, contUsuario);
+
+    //Abrir los 3 paneles principales.
+    const opciones = document.querySelectorAll('.etiquetaF');
+    const panel = document.querySelectorAll('.panel');
+    const panelPadre = document.getElementById('panelPadre');
+    mostrarPanel(opciones, panel, panelPadre)
 
 
     const inFechaInp = document.getElementById('fechaLimieCreate');
@@ -67,49 +69,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Evento para mostrar detalles extra delF
     const btnMasInfo = document.getElementById('btnFlecha');
-    const contInfo =document.getElementById('contMasInfo');
+    const contInfo = document.getElementById('contMasInfo');
 
     masInfo(btnMasInfo, contInfo);
 
 
-});
 
 
-function masInfo(btnMasInfo, contInfo){
-    btnMasInfo.addEventListener('click', () =>{
-        if(contInfo.classList.contains('cerrar')){
+});//Fin evento DOM
+/**
+ * Función para cambiar entre secciones, ya sea entre Datos del Usuario, Crear tareas y ver tareas
+ * @param {*} opciones 
+ * @param {*} panel 
+ * @param {*} panelPadre 
+ */
+function mostrarPanel(opciones, panel, panelPadre){
+    // Recorremos las opciones las cuales son las opción del DropDown Menu.
+    opciones.forEach((op, indice) => {
+        //Evento cuando presionamos una opción.
+        op.addEventListener('click', () => {
+            panel.forEach((panel) => {
+                    panel.classList.add('cerrar');
+                    panelPadre.classList.add('cerrar')
+            });
+            let dataPanel = panel[indice].dataset.panel;
+            
+            console.log(`dataset: ${dataPanel}, longitud: ${dataPanel.length}`)
+            let longitud = dataPanel.length;
+            // Aqui hago la comparacion de data-state y lo abro sea el caso que cumpla con este.
+            if(dataPanel.slice(0, (longitud -1)) === 'tarea'){
+                panelPadre.classList.remove('cerrar')
+            }else{
+                panelPadre.classList.add('cerrar')
+            }
+            panel[indice].classList.remove('cerrar');
+        });
+    });
+}
+
+
+function masInfo(btnMasInfo, contInfo) {
+    btnMasInfo.addEventListener('click', () => {
+        if (contInfo.classList.contains('cerrar')) {
             contInfo.classList.remove('cerrar');
-        }else{
+        } else {
             contInfo.classList.add('cerrar');
         }
     });
 }
 
-function fechaActual(){
+function fechaActual() {
     const hoy = new Date().toISOString().split('T')[0];
     return hoy;
 }
 
 
-function verOpcionesMenu(btnMenu, contOpciones){
-    btnMenu.addEventListener('click', () =>{
+function verOpcionesMenu(btnMenu, contOpciones) {
+    btnMenu.addEventListener('click', () => {
 
-        if(contOpciones.classList.contains('cerrar')){
+        if (contOpciones.classList.contains('cerrar')) {
             contOpciones.classList.remove('cerrar');
-        }else{
+        } else {
             contOpciones.classList.add('cerrar')
         }
     });
 }
-
-function activarPaneles(btnUsuario, contUsuario){
-    btnUsuario.addEventListener('click', () =>{
-        if(contUsuario.classList.contains('cerrar')){
+// Esta función puede ser cambiada
+function activarPaneles(btnUsuario, contUsuario) {
+    btnUsuario.addEventListener('click', () => {
+        if (contUsuario.classList.contains('cerrar')) {
             //Seccion para cerrar una seccion
             contUsuario.classList.remove('cerrar')
             //Ahora que se cerro la seccion toca ocultar el dropdown
             contOpciones.classList.add('cerrar')
-        }else{
+        } else {
             contOpciones.classList.add('cerrar')
             contUsuario.classList.remove('cerrar')
         }
@@ -130,7 +163,7 @@ function crearUsu(formSigIn, mensajeError) {
         const datoFormulario = new FormData(formSigIn);
         const usuario = Object.fromEntries(datoFormulario.entries());
         //Elimina espacios iniciales y finales de cadenas en los inputs
-        for(let llave in usuario){
+        for (let llave in usuario) {
             usuario[llave] = usuario[llave].trim();
         }
         //Si regresa un valor no vacio entonces no mandamos el formulario y mostramos que
@@ -169,7 +202,7 @@ function credencialesLog(formLog, mensajeError) {
         const datosForm = new FormData(formLog);
         //Limpia el formulario para que no existan espacios vacios
         const credenciales = Object.fromEntries(datosForm.entries());
-        for(let llave in credenciales){
+        for (let llave in credenciales) {
             credenciales[llave] = credenciales[llave].trim();
         }
         const valores = validarInputs(credenciales);
