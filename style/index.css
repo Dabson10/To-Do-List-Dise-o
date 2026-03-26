@@ -32,6 +32,9 @@
     --alta-bg: rgba(239, 68, 68, 0.1);   --alta-txt: #f87171;
 }
 
+* {
+    box-sizing: border-box;
+}
 
 body {
     max-width: 100vw;
@@ -46,7 +49,7 @@ body {
     font-weight: 300;
     font-style: normal;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 
@@ -75,7 +78,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vh;
+    width: 100%;
 }
 
 .cont-form {
@@ -167,7 +170,7 @@ input, .selector{
     ==============================*/
 .panelPrincipal {
     display: flex;
-    width: 100vh;
+    width: 100%;
 }
 
 
@@ -187,9 +190,13 @@ input, .selector{
     padding: .4em;
 }
 
-.iconoMenu {
+.iconoMenu,.iconoMenu2{
     width: 30px;
     fill: var(--icono-principal);
+    cursor: pointer;
+}
+.iconoMenu2{
+    display: none;
 }
 
 .contSecciones {
@@ -215,7 +222,7 @@ input, .selector{
 
 .contUsuario {
     display: flex;
-    width: 100vw;
+    width: 100%;
     justify-content: center;
     align-items: center;
     margin: auto;
@@ -271,10 +278,19 @@ input, .selector{
 /*  ======================================================
     Diseño para el contenedor padre de crear y ver tareas 
     ========================================================*/
-.contTo-DoGen {
+/* .contTo-DoGen {
     width: 100%;
     display: flex;
-}
+} */
+.contTo-DoGen {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start; 
+        gap: 40px;              
+        width: 90%;              
+        margin: 2em auto;       
+    }
 
 
 /*  ========================================
@@ -286,13 +302,16 @@ input, .selector{
     flex-direction: column;
     gap:.5em;
 }
+.contInCreOrd{
+    display:flex;
+    flex-direction: column;
+}
 .contInptsCrear label{
     margin-top: .5em;
 }
 
 .contCrearTarea {
     margin: auto;
-
 }
 
 .cardCrearTar {
@@ -337,7 +356,7 @@ input, .selector{
     width: 100%;
     display:flex;
     margin: auto;
-    height: 75vh;
+    height: 75%;
 }
 .cardTareas{
     width: 100%;
@@ -348,7 +367,7 @@ input, .selector{
     margin: 0 auto;
     flex-direction: column;
     background-color: var(--card);
-    max-height: 80vh;
+    max-height: 80%;
 
 }
 /* Subdiseño de tarjetas unicas */
@@ -421,26 +440,76 @@ input, .selector{
 @media (min-width: 320px) and (max-width: 375px) {
     body {
         font-size: 15px;
+        width: 100%;
     }
 
     .cont-form {
+        width: 90%;
         padding: .6em;
     }
 }
 
-@media (min-width: 750px) {
-    body {
-        font-size: 16px;
+@media (min-width: 425px) and (max-width: 750px){
+    .contTareas{
+        width: 90%;
+    }
+    .contCrearTarea{
+        /* width: 70%; */
+        margin: auto;
+    }
+    .cardCrearTar{
+        width: 100%;
+    }
+    .contInptsCrear{
+        flex-direction: column;
+        gap:1em;
+    }
+    .filaCont{
+        display:flex;
+        flex-direction: row;
+        gap:1em;
+    }
+    .contInCreOrd{
+        flex-direction: column;
     }
 }
 
 
-@media (width >=1200px) {
+@media (min-width: 750px) {
+    body {
+        font-size: 16px;
+        width: 100%;
+    }
+    .contBtnModo{
+        right: 10px;
+    }
+    .contInptsCrear{
+        flex-direction: column;
+        gap:1em;
+    }
+    .filaCont{
+        display:flex;
+        flex-direction: row;
+        gap:1em;
+    }
+    .contInCreOrd{
+        flex-direction: column;
+    }
+    .cardTareas {
+        width: 100%;     
+        max-height: 85vh;
+    }
+}
+
+
+@media (width >=1000px) {
     body {
         max-width: 100%;
         font-size: 16px;
     }
-
+    .iconoMenu2{
+        display:flex;
+    }
     .contBtnModo {
         bottom: 30px;
         right: 15px;
@@ -456,7 +525,27 @@ input, .selector{
     .cont-form {
         padding: 3em;
     }
+    .contCrearTarea.panel.cerrar, 
+    .contTareas.panel.cerrar {
+        flex: 1;                 
+        width: auto;  
+        visibility: visible;
+        opacity: 1;
+        position: relative;
+    }
 
+    .cardTareas {
+        width: 100%;     
+        max-height: 85vh;
+    }
+    /* Ahora para alturas desde 1000 no se debera de usar el btn hamburguesa,
+    si no botones unicos. */
+    /*Desactivamos el boton general. */
+    .iconoMenu{
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+    }
 }
 
 /* Etiquetas reutilizables. */

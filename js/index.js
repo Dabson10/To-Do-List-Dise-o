@@ -72,11 +72,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const contInfo = document.getElementById('contMasInfo');
 
     masInfo(btnMasInfo, contInfo);
+    const btnsIconos = document.querySelectorAll('.iconoMenu2')
+    const contenedores = document.querySelectorAll('.cont');
 
+    btnsIconos.forEach((icono, index) =>{
+        icono.addEventListener('click', ()=>{
+            contenedores.forEach(cont =>{
+            cont.classList.add('cerrar');
+        });
+            // let dataI = btnsIconos[index].dataset.icono;'
+            let dataI = icono.dataset.icono;
+            let dataCont = contenedores[index].dataset.sec;
+
+            let dataINum = icono.dataset.num;
+            let dataContNum = contenedores[index].dataset.num;
+
+            let longDataI = `${dataI.length}`;
+            let longDataCont = `${dataCont.length}`;
+
+            //Teniando los data de cada boton y contenedor, toca inverir paneles e iconos
+            if(dataI === dataCont){
+                //Cierra el contenedor y el icono que estan visibles.
+                icono.classList.add('cerrar')
+                contenedores[index].classList.add('cerrar')
+                //Ahora toca mostrar los otros que como tal es la posicion del anterior
+                // console.log(`Iconos data${longDataI}, Cont data ${longDataCont}`)
+                //Ahora obtendremos el indice del icono y contenedor
+                // console.log(`Num icono: ${iconoNum}, Num contenedor: ${contNum}`);
+                btnsIconos[dataINum].classList.remove('cerrar')
+                contenedores[dataContNum].classList.remove('cerrar')
+
+            }
+        });
+    });
 
 
 
 });//Fin evento DOM
+
+//Funcionalidad para cambiar entre dos vistas.
+
+
 /**
  * Función para cambiar entre secciones, ya sea entre Datos del Usuario, Crear tareas y ver tareas
  * @param {*} opciones 
@@ -93,9 +129,6 @@ function mostrarPanel(opciones, panel, panelPadre){
                     panelPadre.classList.add('cerrar')
             });
             let dataPanel = panel[indice].dataset.panel;
-            
-            console.log(`dataset: ${dataPanel}, longitud: ${dataPanel.length}`)
-            let longitud = dataPanel.length;
             // Aqui hago la comparacion de data-state y lo abro sea el caso que cumpla con este.
             if(dataPanel.slice(0, (longitud -1)) === 'tarea'){
                 panelPadre.classList.remove('cerrar')

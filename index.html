@@ -16,14 +16,14 @@
 
 <body>
     <!-- Boton para cambiar el tema de la app. -->
-    <div class="contBtnModo">
+    <div class="contBtnModo ">
         <button class="btnModo" id="btnDarkMode">
             <img src="./icons/luna.png" class="" id="lunaIc" alt="">
             <img src="./icons/soleado.png" class="ocultar" id="solIc" alt="">
         </button>
     </div>
     <!-- Login de la app. -->
-    <section class="login-port ocultar" id="panelLogIn">
+    <section class="login-port cerrar " id="panelLogIn">
         <div class="cont-form">
             <div class="info">
                 <h3>To-Do List</h3>
@@ -107,22 +107,22 @@
         </div>
     </section>
     <!-- Seccion principal de To-Do -->
-    <section class="panelPrincipal">
+    <section class="panelPrincipal  ">
         <!-- Contenedor para iconos, para abir otra seccion flotante. -->
         <div class="contEsquina ">
             <!-- Contenedor con los iconos. -->
-            <div class="contIconoMenu">
+            <div class="contIconoMenu ">
                 <!-- Menu Hamburguesa -->
                 <svg class="iconoMenu " id="btnMenu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg>
                 <!-- Icono de usuario -->
-                <svg class="iconoMenu cerrar" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <svg class="iconoMenu2" data-icono="usuario1" data-num="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path
                         d="M367-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm296.5-343.5Q560-607 560-640t-23.5-56.5Q513-720 480-720t-56.5 23.5Q400-673 400-640t23.5 56.5Q447-560 480-560t56.5-23.5ZM480-640Zm0 400Z" />
                 </svg>
                 <!-- Icono de To Do -->
-                <svg class="iconoMenu cerrar" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <svg class="iconoMenu2 cerrar" data-icono="tareas0" data-num="0" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path
                         d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z" />
                 </svg>
@@ -135,7 +135,7 @@
             </div>
         </div>
         <!-- Contenedores de los usuarios. -->
-        <section class="contUsuario panel " data-panel="usuario" id="contUsuario">
+        <section class="contUsuario panel cerrar cont" data-sec="usuario1" data-num="0" data-panel="usuario" id="contUsuario">
             <div class="cardUsuario">
                 <form class="contIcUsuario">
                     <!-- SVG del icono del usuario -->
@@ -154,15 +154,15 @@
                     <input type="text" id="apeEdit" name="apellido" disabled>
 
                     <label for="idUsuEdit">Id usuario: </label>
-                    <input type="text" name="idUsuEdit" disabled >
+                    <input type="text" name="idUsuEdit" disabled>
                     <button type="button" class="btnDatos" id="btnDatosUsu">Cambiar datos</button>
                 </form>
             </div>
         </section>
         <!-- Un mismo contenedor para crear y ver las tareas. -->
-        <section class="contTo-DoGen  cerrar" id="panelPadre">
+        <section class="contTo-DoGen  cont"data-sec="tareas0" data-num="1" id="panelPadre">
             <!-- Contenedor para crear una tarea nueva -->
-            <section class="contCrearTarea panel cerrar " data-panel="tarea1" id="tareaNueva">
+            <section class="contCrearTarea panel  " data-panel="tarea1" id="tareaNueva">
                 <div class="cardCrearTar">
                     <div class="iconNewTarea">
                         <svg class="svgCont" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -181,23 +181,30 @@
                     </div>
                     <p>Nueva tarea</p>
                     <form class="contInptsCrear">
-                        <label for="inNombreTaraCrear">Tarea:</label>
-                        <input type="text" id="inNombreTaraCrear" placeholder="Estudiar.." required>
+                        <div class="filaCont">
+                            <div class="contInCreOrd">
+                                <label for="inNombreTaraCrear">Tarea:</label>
+                                <input type="text" id="inNombreTaraCrear" placeholder="Estudiar.." required>
 
-                        <label for="">Descripción:</label>
-                        <input type="text" id="inDescCrear" placeholder="Estudiar programación..." required>
-
-                        <label for="">Prioridad</label>
-                        <select class="selector" name="" id="">
-                            <option value="Baja">Baja.</option>
-                            <option value="Media">Media.</option>
-                            <option value="Alta">Alta.</option>
-                        </select>
-                        <label for="">Fecha limite.</label>
-                        <input type="date" id="fechaLimieCreate">
-                        <label for="">Id usuario:</label>
-                        <input type="text" name="id-usuario" placeholder="1">
+                                <label for="">Descripción:</label>
+                                <input type="text" id="inDescCrear" placeholder="Estudiar programación..." required>
+                                <label for="">Prioridad</label>
+                                <select class="selector" name="" id="">
+                                    <option value="Baja">Baja.</option>
+                                    <option value="Media">Media.</option>
+                                    <option value="Alta">Alta.</option>
+                                </select>
+                            </div>
+                            <div class="contInCreOrd">
+                                <label for="">Fecha limite.</label>
+                                <input type="date" id="fechaLimieCreate">
+                                <label for="">Id usuario:</label>
+                                <input type="text" name="id-usuario" placeholder="1">
+                                
+                            </div>
+                        </div>
                         <button class="crearTarea">Crear Tarea.</button>
+
                     </form>
                 </div>
             </section>
@@ -205,7 +212,10 @@
             <main class="contTareas panel cerrar" data-panel="tarea2" id="tareasList">
                 <div class="cardTareas">
                     <div class="cab">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                            <path
+                                d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z" />
+                        </svg>
                         To-Do
                     </div>
                     <!-- Contenedor desplazable para almacenar varias tareas. -->
@@ -215,9 +225,12 @@
                             <div class="cabTarea">
                                 <div class="contIzq">
                                     <p>Tarea: <span><b>Programar</b></span></p>
-                                <p>Prioridad: <span>Alta</span></p>
+                                    <p>Prioridad: <span>Alta</span></p>
                                 </div>
-                                <svg id="btnFlecha" class="flecha" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
+                                <svg id="btnFlecha" class="flecha" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 -960 960 960">
+                                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+                                </svg>
                             </div>
                             <div class="contMasInfoTar cerrar" id="contMasInfo">
                                 <div class="fechas">
@@ -230,8 +243,8 @@
                             </div>
                         </div>
                         <!-- Aqui se agregaran mas de 1 tarea, por lo que deberia ser scroll en y -->
-                        
-                        
+
+
                     </div>
                 </div>
             </main>
