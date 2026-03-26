@@ -75,11 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnsIconos = document.querySelectorAll('.iconoMenu2')
     const contenedores = document.querySelectorAll('.cont');
 
-    btnsIconos.forEach((icono, index) =>{
-        icono.addEventListener('click', ()=>{
-            contenedores.forEach(cont =>{
-            cont.classList.add('cerrar');
-        });
+    btnsIconos.forEach((icono, index) => {
+        icono.addEventListener('click', () => {
+            contenedores.forEach(cont => {
+                cont.classList.add('cerrar');
+            });
             // let dataI = btnsIconos[index].dataset.icono;'
             let dataI = icono.dataset.icono;
             let dataCont = contenedores[index].dataset.sec;
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let longDataCont = `${dataCont.length}`;
 
             //Teniando los data de cada boton y contenedor, toca inverir paneles e iconos
-            if(dataI === dataCont){
+            if (dataI === dataCont) {
                 //Cierra el contenedor y el icono que estan visibles.
                 icono.classList.add('cerrar')
                 contenedores[index].classList.add('cerrar')
@@ -119,20 +119,20 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {*} panel 
  * @param {*} panelPadre 
  */
-function mostrarPanel(opciones, panel, panelPadre){
+function mostrarPanel(opciones, panel, panelPadre) {
     // Recorremos las opciones las cuales son las opción del DropDown Menu.
     opciones.forEach((op, indice) => {
         //Evento cuando presionamos una opción.
         op.addEventListener('click', () => {
             panel.forEach((panel) => {
-                    panel.classList.add('cerrar');
-                    panelPadre.classList.add('cerrar')
+                panel.classList.add('cerrar');
+                panelPadre.classList.add('cerrar')
             });
             let dataPanel = panel[indice].dataset.panel;
             // Aqui hago la comparacion de data-state y lo abro sea el caso que cumpla con este.
-            if(dataPanel.slice(0, (longitud -1)) === 'tarea'){
+            if (dataPanel.slice(0, (dataPanel.length - 1)) === 'tarea') {
                 panelPadre.classList.remove('cerrar')
-            }else{
+            } else {
                 panelPadre.classList.add('cerrar')
             }
             panel[indice].classList.remove('cerrar');
