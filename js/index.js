@@ -1,7 +1,15 @@
 import { loginUsuarios, crearUsuarios } from './api.js';
 
+//Objeto que contendra los datos del usuario.
+const usuario = {
+    id_usuario: "",
+    nombre: "",
+    apellido: "",
+    correo: "",
+    validado: false,
+    tareas: []
+};
 document.addEventListener('DOMContentLoaded', () => {
-
     //Variables para cambiar el tipo de la contraseña en el Login
     const btnVerCont = document.getElementById('btnContraLog');
     const svgNoVerCont = document.getElementById('ojotapado');
@@ -110,9 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });//Fin evento DOM
 
-//Funcionalidad para cambiar entre dos vistas.
-
-
 /**
  * Función para cambiar entre secciones, ya sea entre Datos del Usuario, Crear tareas y ver tareas
  * @param {*} opciones 
@@ -167,21 +172,6 @@ function verOpcionesMenu(btnMenu, contOpciones) {
         }
     });
 }
-// Esta función puede ser cambiada
-function activarPaneles(btnUsuario, contUsuario) {
-    btnUsuario.addEventListener('click', () => {
-        if (contUsuario.classList.contains('cerrar')) {
-            //Seccion para cerrar una seccion
-            contUsuario.classList.remove('cerrar')
-            //Ahora que se cerro la seccion toca ocultar el dropdown
-            contOpciones.classList.add('cerrar')
-        } else {
-            contOpciones.classList.add('cerrar')
-            contUsuario.classList.remove('cerrar')
-        }
-    });
-}
-
 
 /**
  * Función para crear nuevos usuarios, en donde no se repiten correos
@@ -214,12 +204,12 @@ function crearUsu(formSigIn, mensajeError) {
         try {
             mensajeError.textContent = "";
             const respuesta = await crearUsuarios(usuario);
-            console.log("Usuario creado", respuesta)
+            // console.log("Usuario creado", respuesta)
+            guardarJSON(respuesta);
         } catch (error) {
             mensajeError.textContent = "Correo existente intente con otro";
-            console.log("error de ", error)
+            // console.log("error de ", error)
         }
-
     })
 }
 
@@ -251,15 +241,64 @@ function credencialesLog(formLog, mensajeError) {
             return;
         }
         mensajeError.textContent = "";
+        // Aqui empieza la conexion a la base de datos mediante Spring
         try {
             const respuesta = await loginUsuarios(credenciales);
-            console.log("Mandado: ", respuesta);
+            // console.log("Mandado: ", respuesta);
+            guardarJSON(respuesta)
+            //Funcion para quitar el login y mostrar el panel principal.
+            
         } catch (error) {
             mensajeError.textContent = "Datos incorrectos o correo no existente.";
             // console.log("fallo: ", error)
         }
     });
 }
+
+//Se formatea el objeto usuario con los datos recibidos.
+function guardarJSON(datosUsuario){
+    usuario.id_usuario = datosUsuario.id || datosUsuario.id_usuario;
+    usuario.nombre = datosUsuario.nombre;
+    usuario.apellido = datosUsuario.apellido;
+    usuario.correo = datosUsuario.correo;
+    usuario.validado = true;
+    usuario.tareas = datosUsuario.tareas || [];
+    localStorage.setItem("Sesion activa", JSON.stringify(usuario));
+    cambiarVista()
+}
+
+/**
+ * Función para mostrar los datos del usuario.
+ */
+function inDatosUsuario(){
+    const inNombre = document.getElementById('nombreEdit');
+    const inApellido = document.getElementById('apeEdit');
+    const inIdUsu = document.getElementById('idUsuEdit');
+
+    const tareaUsuId = document.getElementById('tareaIdUsu');
+    // Inputs para ver usuarios.
+    inNombre.placeholder = `${usuario.nombre}`;
+    inApellido.placeholder = `${usuario.apellido}`;
+    inIdUsu.placeholder = `${usuario.id_usuario}`;
+    //Input de crear tareas
+    tareaUsuId.placeholder = `${usuario.id_usuario}`;
+    tareaUsuId.value = `${usuario.id_usuario}`;
+}
+
+/**
+ * Funcion para cambiar vista de Login a panel tareas.
+ */
+function cambiarVista(){
+    const panelLogin = document.getElementById('panelLogIn');
+    const panelPrincipal = document.getElementById('contPanelesP');
+    if(usuario.validado){
+        //Si esta validado entonces cambiamos a la vista de tareas.
+        panelLogin.classList.add('cerrar')
+        panelPrincipal.classList.remove('cerrar')
+        inDatosUsuario();
+    }
+}
+
 
 //Funcion que valida que el usuario relleno los inputs del formulario.
 function validarInputs(datosForm) {

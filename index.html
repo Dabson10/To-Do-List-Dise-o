@@ -23,7 +23,7 @@
         </button>
     </div>
     <!-- Login de la app. -->
-    <section class="login-port cerrar" id="panelLogIn">
+    <section class="login-port " id="panelLogIn">
         <div class="cont-form">
             <div class="info">
                 <h3>To-Do List</h3>
@@ -107,7 +107,7 @@
         </div>
     </section>
     <!-- Seccion principal de To-Do -->
-    <section class="panelPrincipal " id="contPanelesP">
+    <section class="panelPrincipal cerrar" id="contPanelesP">
         <!-- Contenedor para iconos, para abir otra seccion flotante. -->
         <div class="contEsquina ">
             <!-- Contenedor con los iconos. -->
@@ -137,8 +137,7 @@
             </div>
         </div>
         <!-- Contenedores de los usuarios. -->
-        <section class="contUsuario panel cerrar cont" data-sec="usuario1" data-num="0" data-panel="usuario"
-            id="contUsuario">
+        <section class="contUsuario panel  cont" data-sec="usuario1" data-num="0" data-panel="usuario" id="contUsuario">
             <div class="cardUsuario">
                 <form class="contIcUsuario">
                     <!-- SVG del icono del usuario -->
@@ -157,13 +156,13 @@
                     <input type="text" id="apeEdit" name="apellido" disabled>
 
                     <label for="idUsuEdit">Id usuario: </label>
-                    <input type="text" name="idUsuEdit" disabled>
+                    <input type="text" name="idUsuEdit" id="idUsuEdit" disabled>
                     <button type="button" class="btnDatos" id="btnDatosUsu">Cambiar datos</button>
                 </form>
             </div>
         </section>
         <!-- Un mismo contenedor para crear y ver las tareas. -->
-        <section class="contTo-DoGen  cont" data-sec="tareas0" data-num="1" id="panelPadre">
+        <section class="contTo-DoGen cerrar cont" data-sec="tareas0" data-num="1" id="panelPadre">
             <!-- Contenedor para crear una tarea nueva -->
             <section class="contCrearTarea panel  " data-panel="tarea1" id="tareaNueva">
                 <div class="cardCrearTar">
@@ -202,7 +201,7 @@
                                 <label for="">Fecha limite.</label>
                                 <input type="date" id="fechaLimieCreate">
                                 <label for="">Id usuario:</label>
-                                <input type="text" name="id-usuario" placeholder="1">
+                                <input type="text" name="id-usuario" id="tareaIdUsu" >
 
                             </div>
                         </div>
