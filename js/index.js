@@ -1,14 +1,23 @@
-import { loginUsuarios, crearUsuarios } from './api.js';
+import { loginUsuarios, crearUsuarios, crearTareas } from './api.js';
 
 //Objeto que contendra los datos del usuario.
+// const usuario = {
+//     id_usuario: 0,
+//     nombre: "",
+//     apellido: "",
+//     correo: "",
+//     validado: false,
+//     tareas: []
+// };
 const usuario = {
-    id_usuario: "",
-    nombre: "",
-    apellido: "",
-    correo: "",
-    validado: false,
+    id_usuario: 60,
+    nombre: "Juan David",
+    apellido: "Almaraz Gonzalez",
+    correo: "almdavid26@gmail.com",
+    validado: true,
     tareas: []
 };
+
 document.addEventListener('DOMContentLoaded', () => {
     //Variables para cambiar el tipo de la contraseña en el Login
     const btnVerCont = document.getElementById('btnContraLog');
@@ -78,8 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //Evento para mostrar detalles extra delF
     const btnMasInfo = document.getElementById('btnFlecha');
     const contInfo = document.getElementById('contMasInfo');
-
-    masInfo(btnMasInfo, contInfo);
+    if(btnMasInfo && contInfo){
+        masInfo(btnMasInfo, contInfo);
+    }
+    
     const btnsIconos = document.querySelectorAll('.iconoMenu2')
     const contenedores = document.querySelectorAll('.cont');
 
@@ -103,10 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 //Cierra el contenedor y el icono que estan visibles.
                 icono.classList.add('cerrar')
                 contenedores[index].classList.add('cerrar')
-                //Ahora toca mostrar los otros que como tal es la posicion del anterior
-                // console.log(`Iconos data${longDataI}, Cont data ${longDataCont}`)
-                //Ahora obtendremos el indice del icono y contenedor
-                // console.log(`Num icono: ${iconoNum}, Num contenedor: ${contNum}`);
                 btnsIconos[dataINum].classList.remove('cerrar')
                 contenedores[dataContNum].classList.remove('cerrar')
 
@@ -114,9 +121,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    //Variables para el formulario de crear nueva tarea
+    const formCrearTarea = document.getElementById('crearTareaF')
+    crearTarea(formCrearTarea);
 
-
+    //Muestra las tareas en el contenedor de tareas
+    const contTareas = document.getElementById('contTareas');
+    traerTarea(contTareas);
 });//Fin evento DOM
+
+function crearTarea(formCrearTarea) {
+    formCrearTarea.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        //Ahora se obtienen los datos del formulario.
+        const formulario = new FormData(formCrearTarea);
+        const tarea = Object.fromEntries(formulario.entries());
+
+        for (let llave in tarea) {
+            tarea[llave] = tarea[llave].trim();
+        }
+        //Valida que los usuarios rellenen los inputs.
+        const validar = validarInputs(tarea);
+        if (validar) {
+            alert('Rellene correctamente los inputs');
+            return;
+        }
+        try{
+            const datosTarea = guardarTareaJSON(tarea);
+            console.log(datosTarea);
+            crearTareas(datosTarea);
+        }catch(error){
+            console.log(`Error del tipo: ${error}`)
+        }
+    });
+}
+
+function traerTarea(contTarea){
+    
+
+}
+
+
+
 
 /**
  * Función para cambiar entre secciones, ya sea entre Datos del Usuario, Crear tareas y ver tareas
@@ -247,7 +293,7 @@ function credencialesLog(formLog, mensajeError) {
             // console.log("Mandado: ", respuesta);
             guardarJSON(respuesta)
             //Funcion para quitar el login y mostrar el panel principal.
-            
+
         } catch (error) {
             mensajeError.textContent = "Datos incorrectos o correo no existente.";
             // console.log("fallo: ", error)
@@ -256,7 +302,7 @@ function credencialesLog(formLog, mensajeError) {
 }
 
 //Se formatea el objeto usuario con los datos recibidos.
-function guardarJSON(datosUsuario){
+function guardarJSON(datosUsuario) {
     usuario.id_usuario = datosUsuario.id || datosUsuario.id_usuario;
     usuario.nombre = datosUsuario.nombre;
     usuario.apellido = datosUsuario.apellido;
@@ -266,11 +312,25 @@ function guardarJSON(datosUsuario){
     localStorage.setItem("Sesion activa", JSON.stringify(usuario));
     cambiarVista()
 }
+function guardarTareaJSON(tarea) {
+    const tareaNueva = {
+        usuario:{
+            id:  Number(tarea.id_usuario)
+        },
+        nombre: tarea.nombre,
+        descripcion: tarea.descripcion,
+        estado: "Pendiente",
+        prioridad: tarea.prioridad,
+        fecha_creacion: `${fechaActual()}`,
+        fecha_limite: tarea.fecha_limite
+    };
+    return tareaNueva;
+}
 
 /**
  * Función para mostrar los datos del usuario.
  */
-function inDatosUsuario(){
+function inDatosUsuario() {
     const inNombre = document.getElementById('nombreEdit');
     const inApellido = document.getElementById('apeEdit');
     const inIdUsu = document.getElementById('idUsuEdit');
@@ -288,10 +348,10 @@ function inDatosUsuario(){
 /**
  * Funcion para cambiar vista de Login a panel tareas.
  */
-function cambiarVista(){
+function cambiarVista() {
     const panelLogin = document.getElementById('panelLogIn');
     const panelPrincipal = document.getElementById('contPanelesP');
-    if(usuario.validado){
+    if (usuario.validado) {
         //Si esta validado entonces cambiamos a la vista de tareas.
         panelLogin.classList.add('cerrar')
         panelPrincipal.classList.remove('cerrar')
@@ -327,14 +387,14 @@ function validarCorreo(datos) {
 function cambioModo(btnCambio, sol, luna) {
     btnCambio.addEventListener('click', () => {
 
-        if (document.body.classList.contains('dark-mode')) {
-            document.body.classList.toggle('dark-mode')
-            sol.classList.add('ocultar')
-            luna.classList.remove('ocultar')
-        } else {
-            document.body.classList.toggle('dark-mode')
+        if (document.body.classList.contains('light-mode')) {
+            document.body.classList.toggle('light-mode')
             sol.classList.remove('ocultar')
             luna.classList.add('ocultar')
+        } else {
+            document.body.classList.toggle('light-mode')
+            sol.classList.add('ocultar')
+            luna.classList.remove('ocultar')
         }
     });
 }

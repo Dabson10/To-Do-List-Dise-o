@@ -1,4 +1,4 @@
-:root {
+.light-mode {
     --fondo: #f8fafc;
     --card: #ffffff;
     --boton: #0891b2;
@@ -18,7 +18,7 @@
     --alta-txt: #991b1b;
 }
 
-.dark-mode {
+:root {
     --fondo: #0f172a;
     --card: #1e293b;
     --boton: #22d3ee;

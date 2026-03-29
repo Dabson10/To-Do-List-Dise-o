@@ -28,3 +28,24 @@ export async function loginUsuarios(credenciales) {
         return await respuesta.json();
 }
 
+// Funcion para crear nuevas tareas
+export async function crearTareas(tarea){
+    const respuesta = await fetch(`${tareaURL}/crear`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:  JSON.stringify(tarea)
+    });
+    if(!respuesta.ok)throw new Error('Valores incorrectos.')
+        return await respuesta.json();
+    
+}
+
+
+//Traer tarea 
+export async function traerTarea(id_usuario){
+    const respuesta = await fetch(`${tareaURL}/traer/${id_usuario}`, {
+        method: 'GET',
+        headers:{'Content-Type': 'application-json'},
+    });
+}
+
