@@ -42,10 +42,12 @@ export async function crearTareas(tarea){
 
 
 //Traer tarea 
-export async function traerTarea(id_usuario){
-    const respuesta = await fetch(`${tareaURL}/traer/${id_usuario}`, {
+export async function usuarioTareas(id_usuario){
+    const respuesta = await fetch(`${tareaURL}/usuario/${id_usuario}`, {
         method: 'GET',
         headers:{'Content-Type': 'application-json'},
     });
+    if(!respuesta.ok) throw new Error('No se encontro el usuario')
+    return await respuesta.json();
 }
 

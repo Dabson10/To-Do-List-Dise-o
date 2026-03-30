@@ -1,22 +1,23 @@
-import { loginUsuarios, crearUsuarios, crearTareas } from './api.js';
+import { loginUsuarios, crearUsuarios, crearTareas, usuarioTareas } from './api.js';
 
 //Objeto que contendra los datos del usuario.
-// const usuario = {
-//     id_usuario: 0,
-//     nombre: "",
-//     apellido: "",
-//     correo: "",
-//     validado: false,
-//     tareas: []
-// };
 const usuario = {
-    id_usuario: 60,
-    nombre: "Juan David",
-    apellido: "Almaraz Gonzalez",
-    correo: "almdavid26@gmail.com",
-    validado: true,
+    id_usuario: 0,
+    nombre: "",
+    apellido: "",
+    correo: "",
+    validado: false,
     tareas: []
 };
+// const usuario = {
+//     id_usuario: 60,
+//     nombre: "Juan David",
+//     apellido: "Almaraz Gonzalez",
+//     correo: "almdavid26@gmail.com",
+//     validado: true,
+//     tareas: []
+// };
+const listaTareas = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     //Variables para cambiar el tipo de la contraseña en el Login
@@ -85,12 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
     inFechaInp.setAttribute('value', fechaActual())
 
     //Evento para mostrar detalles extra delF
-    const btnMasInfo = document.getElementById('btnFlecha');
-    const contInfo = document.getElementById('contMasInfo');
-    if(btnMasInfo && contInfo){
-        masInfo(btnMasInfo, contInfo);
-    }
-    
+    // const btnMasInfo = document.querySelectorAll('.flecha');
+    // const contInfo = document.querySelectorAll('.contMasInfoTar');
+    // if (btnMasInfo && contInfo) {
+    //     masInfo(btnMasInfo, contInfo);
+    // }
+
     const btnsIconos = document.querySelectorAll('.iconoMenu2')
     const contenedores = document.querySelectorAll('.cont');
 
@@ -127,10 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Muestra las tareas en el contenedor de tareas
     const contTareas = document.getElementById('contTareas');
-    traerTarea(contTareas);
+
+    
 });//Fin evento DOM
 
-function crearTarea(formCrearTarea) {
+async function crearTarea(formCrearTarea) {
     formCrearTarea.addEventListener('submit', async (e) => {
         e.preventDefault();
         //Ahora se obtienen los datos del formulario.
@@ -146,22 +148,73 @@ function crearTarea(formCrearTarea) {
             alert('Rellene correctamente los inputs');
             return;
         }
-        try{
+        try {
             const datosTarea = guardarTareaJSON(tarea);
             console.log(datosTarea);
-            crearTareas(datosTarea);
-        }catch(error){
+            const tareaCreate = await crearTareas(datosTarea);
+            console.log(tareaCreate);
+            listaTareas.push(tareaCreate);
+            maquetarTareas();
+        } catch (error) {
             console.log(`Error del tipo: ${error}`)
         }
     });
 }
 
-function traerTarea(contTarea){
-    
+async function tarea() {
+    //contTarea
+    let usuarioID = usuario.id_usuario;
+    console.log(usuarioID);
+    const tareas = await usuarioTareas(usuarioID);
+    console.log(tareas)
+    //Ahora creamos el contenedor de las diferentes tareas.
+    for (let index in tareas) {
+        listaTareas.push(tareas[index])
+    }
+    maquetarTareas();
 
 }
 
-
+function maquetarTareas() {
+    const contenedor = document.getElementById('contDesplazable');
+    contenedor.innerHTML = '';
+    if (listaTareas.length != 0) {
+        listaTareas.forEach((tarea, index) => {
+            contenedor.innerHTML += `
+        <div class="contTarea">
+                            <div class="cabTarea">
+                                <div class="contIzq">
+                                    <p>Tarea: <span><b>${tarea.nombre}</b></span></p>
+                                    <p>Prioridad: <span class ="${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span></p>
+                                </div>
+                                <svg id="btnFlecha" class="flecha" data-tareaID="${tarea.id_tarea}" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 -960 960 960">
+                                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+                                </svg>
+                            </div>
+                            <div class="contMasInfoTar cerrar" data-contTarea="${tarea.id_tarea}" id="contMasInfo">
+                                <div class="fechas">
+                                    <p>Creada: <span>${tarea.fecha_creacion}</span></p>
+                                    <p>Limite: <span>${tarea.fecha_limite}</span></p>
+                                </div>
+                                <p>Descripción: <span>${tarea.descripcion}</span></p>
+                                <p class="estado">Estado: <span class="${tarea.estado}">${tarea.estado}</span></p>
+                                <button class="btnCambiarEstado">Cambiar estado</button>
+                            </div>
+                        </div>
+        `
+            const btnMasInfo = document.querySelectorAll('.flecha');
+            const contInfo = document.querySelectorAll('.contMasInfoTar');
+            if (btnMasInfo && contInfo) {
+                masInfo(btnMasInfo, contInfo);
+            }
+        });
+    } else {
+        contenedor.innerHTML += `
+        <p>Aun ha ingresado tareas.</p>
+        `;
+    }
+}
 
 
 /**
@@ -193,12 +246,27 @@ function mostrarPanel(opciones, panel, panelPadre) {
 
 
 function masInfo(btnMasInfo, contInfo) {
-    btnMasInfo.addEventListener('click', () => {
-        if (contInfo.classList.contains('cerrar')) {
-            contInfo.classList.remove('cerrar');
-        } else {
-            contInfo.classList.add('cerrar');
-        }
+    btnMasInfo.forEach((boton, index) => {
+        //Evento para que al presionar un boton se abra su sección.
+        boton.addEventListener('click', () => {
+            const estaAbierto = !contInfo[index].classList.contains('cerrar');
+            //Cerramos todos los contenedores
+            contInfo.forEach((cont, i) => {
+                cont.classList.add('cerrar')
+                btnMasInfo[i].style.transform = `rotate(0deg)`
+            });
+            if (!estaAbierto) {
+                // Abrimos el contenedor deseado.
+                let dataCont = contInfo[index].dataset.contTarea;
+                let dataBoton = boton.dataset.tareaID;
+                if (dataBoton === dataCont) {
+                    //Si son iguales entonces quitamos el cerrar
+                    contInfo[index].classList.remove('cerrar')
+                    boton.style.transform = `rotate(180deg)`;
+                    boton.style.transition = 'all .5s ease';
+                }
+            }
+        });
     });
 }
 
@@ -252,6 +320,8 @@ function crearUsu(formSigIn, mensajeError) {
             const respuesta = await crearUsuarios(usuario);
             // console.log("Usuario creado", respuesta)
             guardarJSON(respuesta);
+            // Ahora se hace la vista de la tarea nueva.
+            tarea();
         } catch (error) {
             mensajeError.textContent = "Correo existente intente con otro";
             // console.log("error de ", error)
@@ -293,7 +363,7 @@ function credencialesLog(formLog, mensajeError) {
             // console.log("Mandado: ", respuesta);
             guardarJSON(respuesta)
             //Funcion para quitar el login y mostrar el panel principal.
-
+            tarea();
         } catch (error) {
             mensajeError.textContent = "Datos incorrectos o correo no existente.";
             // console.log("fallo: ", error)
@@ -314,8 +384,8 @@ function guardarJSON(datosUsuario) {
 }
 function guardarTareaJSON(tarea) {
     const tareaNueva = {
-        usuario:{
-            id:  Number(tarea.id_usuario)
+        usuario: {
+            id: Number(tarea.id_usuario)
         },
         nombre: tarea.nombre,
         descripcion: tarea.descripcion,

@@ -23,7 +23,7 @@
         </button>
     </div>
     <!-- Login de la app. -->
-    <section class="login-port cerrar" id="panelLogIn">
+    <section class="login-port " id="panelLogIn">
         <div class="cont-form">
             <div class="info">
                 <h3>To-Do List</h3>
@@ -107,7 +107,7 @@
         </div>
     </section>
     <!-- Seccion principal de To-Do -->
-    <section class="panelPrincipal " id="contPanelesP">
+    <section class="panelPrincipal cerrar" id="contPanelesP">
         <!-- Contenedor para iconos, para abir otra seccion flotante. -->
         <div class="contEsquina ">
             <!-- Contenedor con los iconos. -->
@@ -221,7 +221,7 @@
                         To-Do
                     </div>
                     <!-- Contenedor desplazable para almacenar varias tareas. -->
-                    <div class="contDesplazable" id="contTareas">
+                    <div class="contDesplazable" id="contDesplazable">
                         <!-- Contenedor que tendra la tarea. -->
                         <!-- <div class="contTarea">
                             <div class="cabTarea">
@@ -229,12 +229,12 @@
                                     <p>Tarea: <span><b>Programar</b></span></p>
                                     <p>Prioridad: <span>Alta</span></p>
                                 </div>
-                                <svg id="btnFlecha" class="flecha" xmlns="http://www.w3.org/2000/svg"
+                                <svg id="btnFlecha" data-tareaID="1" class="flecha" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 -960 960 960">
                                     <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
                                 </svg>
                             </div>
-                            <div class="contMasInfoTar cerrar" id="contMasInfo">
+                            <div class="contMasInfoTar cerrar" data-contTarea="1" id="contMasInfo">
                                 <div class="fechas">
                                     <p>Creada: <span>2026-03-20</span></p>
                                     <p>Limite: <span>2026-03-26</span></p>

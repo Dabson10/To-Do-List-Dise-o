@@ -363,9 +363,13 @@ input,
     ==================================*/
 .contDesplazable {
     overflow-y: auto;
+    overflow-x:hidden;
     flex: 1;
     -webkit-overflow-scrolling: touch;
     height: 70%;
+}
+.contDesplazable::-webkit-scrollbar{
+    width: 12px;
 }
 
 .contTareas {
@@ -452,7 +456,7 @@ input,
 
 
 /* Colores para las diferentes prioridades de la tarea. */
-.bajo {
+.baja {
     color: var(--baja-txt)
 }
 
@@ -545,6 +549,7 @@ input,
     body {
         max-width: 100%;
         font-size: 16px;
+        overflow-y: hidden;
     }
 
     .iconoMenu2 {
