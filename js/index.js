@@ -86,12 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
     inFechaInp.setAttribute('value', fechaActual())
 
     //Evento para mostrar detalles extra delF
-    // const btnMasInfo = document.querySelectorAll('.flecha');
-    // const contInfo = document.querySelectorAll('.contMasInfoTar');
-    // if (btnMasInfo && contInfo) {
-    //     masInfo(btnMasInfo, contInfo);
-    // }
-
+    const btnMasInfo = document.querySelectorAll('.flecha');
+    const contInfo = document.querySelectorAll('.contMasInfoTar');
+    if (btnMasInfo && contInfo) {
+        masInfo(btnMasInfo, contInfo);
+    }
     const btnsIconos = document.querySelectorAll('.iconoMenu2')
     const contenedores = document.querySelectorAll('.cont');
 
@@ -179,8 +178,9 @@ function maquetarTareas() {
     const contenedor = document.getElementById('contDesplazable');
     contenedor.innerHTML = '';
     if (listaTareas.length != 0) {
+        let cadena = "";
         listaTareas.forEach((tarea, index) => {
-            contenedor.innerHTML += `
+            cadena += `
         <div class="contTarea">
                             <div class="cabTarea">
                                 <div class="contIzq">
@@ -203,12 +203,8 @@ function maquetarTareas() {
                             </div>
                         </div>
         `
-            const btnMasInfo = document.querySelectorAll('.flecha');
-            const contInfo = document.querySelectorAll('.contMasInfoTar');
-            if (btnMasInfo && contInfo) {
-                masInfo(btnMasInfo, contInfo);
-            }
         });
+        contenedor.innerHTML = cadena;
     } else {
         contenedor.innerHTML += `
         <p>Aun ha ingresado tareas.</p>
