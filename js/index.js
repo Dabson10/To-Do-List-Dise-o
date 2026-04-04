@@ -18,6 +18,14 @@ const usuario = {
 //     tareas: []
 // };
 const listaTareas = [];
+let filtroActual = 'pendientes';
+
+// Jerarquía de prioridades para el ordenamiento
+const prioridades = {
+    'Alta': 3,
+    'Media': 2,
+    'Baja': 1
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     //Variables para cambiar el tipo de la contraseña en el Login
@@ -132,6 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const contAlerta = document.querySelectorAll('.contAlerta');
     const descErr = document.querySelectorAll('.textAlert');
     cerrarAlerta(btnCerrar, contAlerta, descErr);
+
+    // Listeners para el Segmented Control de filtros
+    const btnsFiltro = document.querySelectorAll('.btnFiltro');
+    btnsFiltro.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btnsFiltro.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filtroActual = btn.dataset.filtro;
+            maquetarTareas();
+        });
+    });
 });//Fin evento DOM
 
 async function crearTarea(formCrearTarea) {
@@ -186,45 +205,110 @@ async function tarea() {
 function maquetarTareas() {
     const contenedor = document.getElementById('contDesplazable');
     contenedor.innerHTML = '';
-    if (listaTareas.length != 0) {
-        let cadena = "";
-        listaTareas.forEach((tarea, index) => {
-            cadena += `
-        <div class="contTarea">
-                            <div class="cabTarea">
-                                <div class="contIzq">
-                                    <p>Tarea: <span><b>${tarea.nombre}</b></span></p>
-                                    <p>Prioridad: <span class ="${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span></p>
-                                </div>
-                                <svg id="btnFlecha" class="flecha" data-tareaID="${tarea.id_tarea}" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 -960 960 960">
-                                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
-                                </svg>
-                            </div>
-                            <div class="contMasInfoTar cerrar" data-contTarea="${tarea.id_tarea}" id="contMasInfo">
-                                <div class="fechas">
-                                    <p>Creada: <span>${tarea.fecha_creacion}</span></p>
-                                    <p>Limite: <span>${tarea.fecha_limite}</span></p>
-                                </div>
-                                <p>Descripción: <span>${tarea.descripcion}</span></p>
-                                <p class="estado">Estado: <span class="${tarea.estado}">${tarea.estado}</span></p>
-                                <button class="btnCambiarEstado">Cambiar estado</button>
-                            </div>
-                        </div>
-        `
-        });
-        contenedor.innerHTML = cadena;
-        //Evento para mostrar detalles extra delF
-        const btnMasInfo = document.querySelectorAll('.flecha');
-        const contInfo = document.querySelectorAll('.contMasInfoTar');
-        if (btnMasInfo && contInfo) {
-            masInfo(btnMasInfo, contInfo);
-        }
-    } else {
-        contenedor.innerHTML += `
-        <p>Aun no has ingresado tareas.</p>
-        `;
+
+    if (listaTareas.length === 0) {
+        contenedor.innerHTML = '<p>Aún no has ingresado tareas.</p>';
+        return;
     }
+
+    // Filtrar las tareas según el estado del Segmented Control
+    let tareasFiltradas = listaTareas;
+    if (filtroActual === 'pendientes') {
+        tareasFiltradas = listaTareas.filter(tarea => tarea.estado !== 'Completada');
+    } else if (filtroActual === 'completadas') {
+        tareasFiltradas = listaTareas.filter(tarea => tarea.estado === 'Completada');
+    }
+
+    // Ordenar las tareas por prioridad (Alta > Media > Baja)
+    tareasFiltradas.sort((a, b) => {
+        return prioridades[b.prioridad] - prioridades[a.prioridad];
+    });
+
+    if (tareasFiltradas.length === 0) {
+        contenedor.innerHTML = `<p>No hay tareas en "${filtroActual}".</p>`;
+        return;
+    }
+
+    let cadena = "";
+    tareasFiltradas.forEach(tarea => {
+        cadena += generarHTMLTarea(tarea);
+    });
+
+    contenedor.innerHTML = cadena;
+
+    // Reactivamos los eventos de los botones recién creados
+    const btnMasInfo = document.querySelectorAll('.flecha');
+    const contInfo = document.querySelectorAll('.contMasInfoTar');
+    if (btnMasInfo && contInfo) {
+        masInfo(btnMasInfo, contInfo);
+    }
+
+    // Agregamos evento a los botones de cambiar estado
+    const btnsEstado = document.querySelectorAll('.btnCambiarEstado');
+    btnsEstado.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const idTarea = btn.closest('.contTarea').querySelector('.flecha').dataset.tareaID;
+            const tareaObj = listaTareas.find(t => t.id_tarea == idTarea);
+
+            if (tareaObj) {
+                tareaObj.estado = (tareaObj.estado === 'Completada') ? 'Pendiente' : 'Completada';
+                maquetarTareas();
+            }
+        });
+    });
+
+    // Lógica para el botón de Editar (Maquetado)
+    const btnsEditar = document.querySelectorAll('.btnEditar');
+    btnsEditar.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const tarjeta = btn.closest('.contTarea');
+            tarjeta.classList.toggle('editando');
+            btn.textContent = tarjeta.classList.contains('editando') ? 'Cancelar' : 'Editar';
+        });
+    });
+}
+
+function generarHTMLTarea(tarea) {
+    const esCompletada = tarea.estado === 'Completada';
+    return `
+        <div class="contTarea ${esCompletada ? 'completada' : ''}">
+            <div class="cabTarea">
+                <div class="contIzq">
+                    <p>Tarea: <span class="texto-vista"><b>${tarea.nombre}</b></span>
+                        <input type="text" class="input-edit" value="${tarea.nombre}">
+                    </p>
+                    <p>Prioridad: <span class="texto-vista ${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
+                        <select class="input-edit selector-mini">
+                            <option value="Alta" ${tarea.prioridad === 'Alta' ? 'selected' : ''}>Alta</option>
+                            <option value="Media" ${tarea.prioridad === 'Media' ? 'selected' : ''}>Media</option>
+                            <option value="Baja" ${tarea.prioridad === 'Baja' ? 'selected' : ''}>Baja</option>
+                        </select>
+                    </p>
+                </div>
+                <svg id="btnFlecha" class="flecha" data-tareaID="${tarea.id_tarea}" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 -960 960 960">
+                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+                </svg>
+            </div>
+            <div class="contMasInfoTar cerrar" data-contTarea="${tarea.id_tarea}" id="contMasInfo">
+                <div class="fechas">
+                    <p>Creada: <span>${tarea.fecha_creacion}</span></p>
+                    <p>Limite: <span class="texto-vista">${tarea.fecha_limite}</span>
+                       <input type="date" class="input-edit" value="${tarea.fecha_limite}">
+                    </p>
+                </div>
+                <p>Descripción: <span class="texto-vista">${tarea.descripcion}</span>
+                   <textarea class="input-edit">${tarea.descripcion}</textarea>
+                </p>
+                <p class="estado">Estado: <span class="${tarea.estado === 'Completada' ? 'baja' : 'alta'}">${tarea.estado}</span></p>
+                <div class="contAcciones">
+                    <button class="btnCambiarEstado">${esCompletada ? 'Desmarcar' : 'Completar'}</button>
+                    <button class="btnEditar">Editar</button>
+                    <button class="btnGuardar input-edit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 
