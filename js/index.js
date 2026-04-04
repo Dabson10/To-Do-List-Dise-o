@@ -86,11 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
     inFechaInp.setAttribute('value', fechaActual())
 
     //Evento para mostrar detalles extra delF
-    const btnMasInfo = document.querySelectorAll('.flecha');
-    const contInfo = document.querySelectorAll('.contMasInfoTar');
-    if (btnMasInfo && contInfo) {
-        masInfo(btnMasInfo, contInfo);
-    }
+    // const btnMasInfo = document.querySelectorAll('.flecha');
+    // const contInfo = document.querySelectorAll('.contMasInfoTar');
+    // if (btnMasInfo && contInfo) {
+    //     masInfo(btnMasInfo, contInfo);
+    // }
     const btnsIconos = document.querySelectorAll('.iconoMenu2')
     const contenedores = document.querySelectorAll('.cont');
 
@@ -128,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //Muestra las tareas en el contenedor de tareas
     const contTareas = document.getElementById('contTareas');
 
-    
+    const btnCerrar = document.querySelectorAll('.cerrarAlert');
+    const contAlerta = document.querySelectorAll('.contAlerta');
+    const descErr = document.querySelectorAll('.textAlert');
+    cerrarAlerta(btnCerrar, contAlerta, descErr);
 });//Fin evento DOM
 
 async function crearTarea(formCrearTarea) {
@@ -154,24 +157,30 @@ async function crearTarea(formCrearTarea) {
             console.log(tareaCreate);
             listaTareas.push(tareaCreate);
             maquetarTareas();
+
+            formCrearTarea.reset();
         } catch (error) {
-            console.log(`Error del tipo: ${error}`)
+            panelError(error);
         }
     });
 }
 
 async function tarea() {
-    //contTarea
-    let usuarioID = usuario.id_usuario;
-    console.log(usuarioID);
-    const tareas = await usuarioTareas(usuarioID);
-    console.log(tareas)
-    //Ahora creamos el contenedor de las diferentes tareas.
-    for (let index in tareas) {
-        listaTareas.push(tareas[index])
-    }
-    maquetarTareas();
+    try {
+        //contTarea
+        let usuarioID = usuario.id_usuario;
+        console.log(usuarioID);
+        const tareas = await usuarioTareas(usuarioID);
+        console.log(tareas)
+        //Ahora creamos el contenedor de las diferentes tareas.
+        for (let index in tareas) {
+            listaTareas.push(tareas[index])
+        }
+        maquetarTareas();
 
+    } catch (error) {
+        panelError(error);
+    }
 }
 
 function maquetarTareas() {
@@ -205,9 +214,15 @@ function maquetarTareas() {
         `
         });
         contenedor.innerHTML = cadena;
+        //Evento para mostrar detalles extra delF
+        const btnMasInfo = document.querySelectorAll('.flecha');
+        const contInfo = document.querySelectorAll('.contMasInfoTar');
+        if (btnMasInfo && contInfo) {
+            masInfo(btnMasInfo, contInfo);
+        }
     } else {
         contenedor.innerHTML += `
-        <p>Aun ha ingresado tareas.</p>
+        <p>Aun no has ingresado tareas.</p>
         `;
     }
 }
@@ -292,6 +307,7 @@ function verOpcionesMenu(btnMenu, contOpciones) {
 function crearUsu(formSigIn, mensajeError) {
     formSigIn.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const btnCrear = document.getElementById('btn-crear');
         //Obtengo todos los datos del formulario.
         const datoFormulario = new FormData(formSigIn);
         const usuario = Object.fromEntries(datoFormulario.entries());
@@ -314,15 +330,28 @@ function crearUsu(formSigIn, mensajeError) {
         try {
             mensajeError.textContent = "";
             const respuesta = await crearUsuarios(usuario);
+            btnCrear.disabled = true;
             // console.log("Usuario creado", respuesta)
             guardarJSON(respuesta);
             // Ahora se hace la vista de la tarea nueva.
             tarea();
+            bienvenida();
         } catch (error) {
-            mensajeError.textContent = "Correo existente intente con otro";
-            // console.log("error de ", error)
+            // mensajeError.textContent = "Correo existente intente con otro";
+            btnCrear.disabled = false;
+            panelError(error);
         }
     })
+}
+
+function bienvenida() {
+    const contAlerta = document.getElementById('contNuevo');
+    const descErr = document.getElementById('usuarioBienvenida');
+
+    if (contAlerta.classList.contains('cerrar')) {
+        contAlerta.classList.remove('cerrar');
+        descErr.textContent = `${usuario.nombre}. Ahora podras registrar tus tareas pendientes.`;
+    }
 }
 
 /**
@@ -333,6 +362,7 @@ function crearUsu(formSigIn, mensajeError) {
 function credencialesLog(formLog, mensajeError) {
     formLog.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const btnLog = document.getElementById('btn-log');
         //
         const datosForm = new FormData(formLog);
         //Limpia el formulario para que no existan espacios vacios
@@ -356,13 +386,14 @@ function credencialesLog(formLog, mensajeError) {
         // Aqui empieza la conexion a la base de datos mediante Spring
         try {
             const respuesta = await loginUsuarios(credenciales);
+            btnLog.disabled = true;
             // console.log("Mandado: ", respuesta);
             guardarJSON(respuesta)
             //Funcion para quitar el login y mostrar el panel principal.
             tarea();
         } catch (error) {
-            mensajeError.textContent = "Datos incorrectos o correo no existente.";
-            // console.log("fallo: ", error)
+            btnLog.disabled = false;
+            panelError(error);
         }
     });
 }
@@ -392,7 +423,32 @@ function guardarTareaJSON(tarea) {
     };
     return tareaNueva;
 }
+/**
+ * Funcion para cerrar ya se el de error o el de bienvenida.
+ * @param {*} status 
+ */
+function panelError(status) {
+    const contAlerta = document.getElementById('contAlert');
+    const descErr = document.getElementById('errorCausa');
 
+    if (contAlerta.classList.contains('cerrar')) {
+        contAlerta.classList.remove('cerrar');
+        descErr.textContent = status;
+    }
+}
+
+function cerrarAlerta(btnCerrar, contAlerta, descErr) {
+    btnCerrar.forEach((boton, index) => {
+        boton.addEventListener('click', () => {
+            let dataText = descErr[index].dataset.textoAlert;
+            let dataCont = contAlerta[index].dataset.contError;
+            if (dataText === dataCont) {
+                contAlerta[index].classList.add('cerrar');
+                descErr[index].textContent = '';
+            }
+        });
+    });
+}
 /**
  * Función para mostrar los datos del usuario.
  */

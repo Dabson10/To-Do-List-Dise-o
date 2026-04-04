@@ -8,7 +8,7 @@
     --borde: #e2e8f0;
     --acento: #06b6d4;
     --icono-principal: #0891b2;
-
+    --icono-alegre: rgb(208, 151, 17);
     /* Prioridades */
     --baja-bg: #f0fdf4;
     --baja-txt: #166534;
@@ -28,6 +28,7 @@
     --borde: #334155;
     --acento: #67e8f9;
     --icono-principal: #22d3ee;
+    --icono-alegre: rgb(246, 231, 27);
 
     /* Prioridades Dark */
     --baja-bg: rgba(34, 197, 94, 0.1);
@@ -58,6 +59,65 @@ body {
     overflow-y: auto;
 }
 
+/* Diseño para el contenedor de error */
+.contAlerta,
+.contNuevo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    flex-direction: column;
+    background-color: var(--card);
+    padding: 1em;
+    border-radius: .5em;
+    border: 1px solid var(--borde);
+    z-index: 999;
+}
+
+.cabError {
+    display: flex;
+    /* align-items: */
+    width: 100%;
+    /* justify-content: space-between; */
+    flex-direction: row;
+    gap: 20px
+}
+
+.errorIcon,
+.sonrisaIcon {
+    fill: var(--alta-txt);
+    width: 30px;
+}
+
+.sonrisaIcon {
+    fill: var(--icono-alegre);
+}
+
+.cerrarCont {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.cerrarAlert {
+    fill: var(--boton);
+    width: 20px;
+    margin: 0;
+    margin-left: auto;
+    ;
+}
+
+.cuerpoError {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
 
 #logError {
     color: var(--error);
@@ -163,6 +223,12 @@ input,
     border: none;
     background-color: var(--boton);
     cursor: pointer;
+}
+
+/* Cambiar el color del boton al dobre poner el mouse */
+.log-btn:hover {
+    background-color: var(--alta-txt);
+    transition: .2s ease-in;
 }
 
 /* Formulario de registro */
@@ -363,12 +429,13 @@ input,
     ==================================*/
 .contDesplazable {
     overflow-y: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
     flex: 1;
     -webkit-overflow-scrolling: touch;
     height: 70%;
 }
-.contDesplazable::-webkit-scrollbar{
+
+.contDesplazable::-webkit-scrollbar {
     width: 12px;
 }
 

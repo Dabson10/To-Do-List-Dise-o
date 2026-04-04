@@ -22,6 +22,44 @@
             <img src="./icons/soleado.png" class="" id="solIc" alt="">
         </button>
     </div>
+    <!-- Contenedor que tendra una alerta para los errores. -->
+    <div class="contAlerta cerrar" data-contError="error" id="contAlert">
+        <div class="cabError">
+            <svg class="errorIcon" data-alerta="error" xmlns="http://www.w3.org/2000/svg" id="Layer_1"
+                data-name="Layer 1" viewBox="0 0 24 24">
+                <path
+                    d="m23.341,9.48l-3.501-6c-.893-1.53-2.547-2.48-4.318-2.48h-7.071c-1.771,0-3.426.951-4.319,2.48L.631,9.48c-.906,1.554-.906,3.485,0,5.039l3.501,6c.893,1.53,2.547,2.48,4.318,2.48h7.071c1.771,0,3.426-.951,4.319-2.48l3.5-6c.906-1.554.906-3.485,0-5.039Zm-7.634,4.812c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293l-2.293-2.293-2.293,2.293c-.195.195-.451.293-.707.293s-.512-.098-.707-.293c-.391-.391-.391-1.023,0-1.414l2.293-2.293-2.293-2.293c-.391-.391-.391-1.023,0-1.414s1.023-.391,1.414,0l2.293,2.293,2.293-2.293c.391-.391,1.023-.391,1.414,0s.391,1.023,0,1.414l-2.293,2.293,2.293,2.293Z" />
+            </svg>
+            <p>Error</p>
+            <svg class="cerrarAlert" data-textoAlert="error" id="btnCerrarAlert" xmlns="http://www.w3.org/2000/svg"
+                data-name="Layer 1" viewBox="0 0 24 24">
+                <path
+                    d="M13.292,12L21.774,1.633c.35-.427,.286-1.057-.142-1.407-.428-.348-1.057-.287-1.407,.142L12,10.421,3.774,.367c-.351-.429-.98-.49-1.407-.142-.428,.351-.491,.98-.142,1.407L10.708,12,2.226,22.367c-.35,.427-.286,1.057,.142,1.407,.186,.151,.409,.226,.632,.226,.29,0,.577-.125,.775-.367L12,13.579l8.226,10.053c.198,.242,.485,.367,.775,.367,.223,0,.446-.074,.632-.226,.428-.351,.491-.98,.142-1.407L13.292,12Z" />
+            </svg>
+        </div>
+        <div class="cuerpoError">
+            <p><span class="textAlert" id="errorCausa"></span></p>
+        </div>
+    </div>
+    <!-- Contenedor para dar la bienvenida a los nuevos usuarios. -->
+    <div class="contAlerta cerrar" data-contError="nuevo" id="contNuevo">
+        <div class="cabError">
+            <svg class="sonrisaIcon" data-textoAlert="nuevo" xmlns="http://www.w3.org/2000/svg" id="Layer_1"
+                data-name="Layer 1" viewBox="0 0 24 24">
+                <path
+                    d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22ZM7,9.5C7,8.119,7.672,7,8.5,7S10,8.119,10,9.5,9.328,12,8.5,12,7,10.881,7,9.5Zm7,0c0-1.381.672-2.5,1.5-2.5S17,8.119,17,9.5,16.328,12,15.5,12,14,10.881,14,9.5ZM12,15a21.923,21.923,0,0,0,6.007-1c-.615,2.28-2.664,5-6,5S6.615,16.28,6,14A21.841,21.841,0,0,0,12,15Z" />
+            </svg>
+            <p>Bienvenido</p>
+            <svg class="cerrarAlert" id="btnCerrarAlert" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                viewBox="0 0 24 24">
+                <path
+                    d="M13.292,12L21.774,1.633c.35-.427,.286-1.057-.142-1.407-.428-.348-1.057-.287-1.407,.142L12,10.421,3.774,.367c-.351-.429-.98-.49-1.407-.142-.428,.351-.491,.98-.142,1.407L10.708,12,2.226,22.367c-.35,.427-.286,1.057,.142,1.407,.186,.151,.409,.226,.632,.226,.29,0,.577-.125,.775-.367L12,13.579l8.226,10.053c.198,.242,.485,.367,.775,.367,.223,0,.446-.074,.632-.226,.428-.351,.491-.98,.142-1.407L13.292,12Z" />
+            </svg>
+        </div>
+        <div class="cuerpoError">
+            <p>Hola, <span data-textoAlert="nuevo" class="textAlert" id="usuarioBienvenida"></span></p>
+        </div>
+    </div>
     <!-- Login de la app. -->
     <section class="login-port " id="panelLogIn">
         <div class="cont-form">
@@ -60,7 +98,7 @@
                     </button>
                 </div>
                 <p id="logError"></p>
-                <button type="submit" class="log-btn">Ingresar</button>
+                <button type="submit" id="btn-log" class="log-btn">Ingresar</button>
                 <p class="textExtra">
                     Si no cuentas con correo <span class="colorText" id="cambioLog">crealo aqui</span>
                 </p>
@@ -70,7 +108,7 @@
                 <p>Ingrese sus datos para crear cuenta</p>
                 <input type="text" name="nombre" placeholder="Nombre" required />
                 <input type="text" name="apellido" placeholder="Apellidos" required />
-                <input type="text" name="correo" placeholder="Email" autocomplete="username" required />
+                <input type="email" name="correo" placeholder="Email" autocomplete="username" required />
                 <div class="contra">
                     <input type="password" name="clave" class="inContra" id="InContraSign"
                         autocomplete="current-password" placeholder="********" required />
@@ -99,7 +137,7 @@
                     </button>
                 </div>
                 <p id="mensajeError2"></p>
-                <button type="submit" class="log-btn">Crear cuenta</button>
+                <button type="submit" id="btn-crear" class="log-btn">Crear cuenta</button>
                 <p class="textExtra">
                     Si ya cuentas con correo <span class="colorText" id="cambioSign">ingresa aqui</span>
                 </p>
@@ -137,7 +175,8 @@
             </div>
         </div>
         <!-- Contenedores de los usuarios. -->
-        <section class="contUsuario panel cerrar  cont" data-sec="usuario1" data-num="0" data-panel="usuario" id="contUsuario">
+        <section class="contUsuario panel cerrar  cont" data-sec="usuario1" data-num="0" data-panel="usuario"
+            id="contUsuario">
             <div class="cardUsuario">
                 <form class="contIcUsuario">
                     <!-- SVG del icono del usuario -->
@@ -186,10 +225,11 @@
                         <div class="filaCont">
                             <div class="contInCreOrd">
                                 <label for="inNombreTaraCrear">Tarea:</label>
-                                <input type="text" id="inNombreTaraCrear" name="nombre" placeholder="Estudiar.." >
+                                <input type="text" id="inNombreTaraCrear" name="nombre" placeholder="Estudiar..">
 
                                 <label for="">Descripción:</label>
-                                <input type="text" id="inDescCrear" name="descripcion" placeholder="Estudiar programación..." >
+                                <input type="text" id="inDescCrear" name="descripcion"
+                                    placeholder="Estudiar programación...">
                                 <label for="">Prioridad</label>
                                 <select class="selector" name="prioridad" id="">
                                     <option value="Baja">Baja.</option>
@@ -201,7 +241,7 @@
                                 <label for="">Fecha limite.</label>
                                 <input type="date" name="fecha_limite" id="fechaLimieCreate">
                                 <label for="">Id usuario:</label>
-                                <input type="text" name="id_usuario" value ='60' id="tareaIdUsu" readonly>
+                                <input type="text" name="id_usuario" value='60' id="tareaIdUsu" readonly>
 
                             </div>
                         </div>
