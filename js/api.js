@@ -1,9 +1,9 @@
 //URL para llamar a la api de tareas
-const tareaURL = 'http://localhost:8081/tarea';
-// const tareaURL = 'https://to-do-list-98xe.onrender.com/tarea';
+// const tareaURL = 'http://localhost:8081/tarea';
+const tareaURL = 'https://to-do-list-98xe.onrender.com/tarea';
 //URL para llamar a la api de usuarios
-const usuarioURL = 'http://localhost:8081/usuario';
-// const usuarioURL = 'https://to-do-list-98xe.onrender.com/usuario';
+// const usuarioURL = 'http://localhost:8081/usuario';
+const usuarioURL = 'https://to-do-list-98xe.onrender.com/usuario';
 
 
 
