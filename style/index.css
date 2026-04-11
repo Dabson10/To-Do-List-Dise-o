@@ -2,6 +2,7 @@
     --fondo: #f8fafc;
     --card: #ffffff;
     --boton: #0891b2;
+    --boton-desabled: #f8f8f8c8;
     --texto: #1e293b;
     --texto-secundario: #64748b;
     --input-bg: #ffffff;
@@ -255,7 +256,8 @@ input,
     width: 0 auto;
     margin: 0 0 auto;
     padding: .5em;
-    position: absolute
+    position: absolute;
+    height: 100%;
 }
 
 .contIconoMenu {
@@ -263,6 +265,7 @@ input,
     flex-direction: column;
     fill: var(--texto);
     padding: .4em;
+    justify-content: space-between;
 }
 
 .iconoMenu,
@@ -281,6 +284,7 @@ input,
     background-color: var(--card);
     border: 1px solid var(--borde);
     border-radius: .4em;
+    height: 30%;
 }
 
 .etiquetaF {
@@ -290,6 +294,26 @@ input,
     line-height: 1.5;
     cursor: pointer;
     padding: 0 1em;
+}
+
+#btnLogOut {
+    border: 0px solid var(--icono-principal);
+    border-width: 0 0 1.5px;
+    color: var(--icono-principal);
+    line-height: 1.5;
+    cursor: pointer;
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: none;
+    /* Quitamos la línea para diferenciarlo */
+    transition: color 0.3s ease;
+}
+
+#btnLogOut:hover {
+    color: #f87171;
+    /* Rojo suave para indicar salida */
 }
 
 /*  =====================
@@ -342,6 +366,17 @@ input,
     color: var(--texto);
 }
 
+.desactivado {
+    background-color: var(--alta-txt);
+    cursor: not-allowed;
+    opacity: .5;
+}
+
+.contBtnUsu {
+    display: flex;
+    justify-content: space-between;
+    gap: .5em
+}
 
 .contIcUsuario label {
     color: var(--acento);
@@ -620,7 +655,12 @@ input,
     }
 
     .iconoMenu2 {
-        display: flex
+        display: flex;
+        transition: color 0.3s ease;
+    }
+
+    .btnLogOut:hover {
+        color: #f87171;
     }
 
     .contBtnModo {
@@ -727,7 +767,8 @@ input,
 }
 
 /* Modo Edición Integrada */
-.input-edit {
+.input-edit,
+.btnCambiar {
     display: none;
     width: 100%;
     margin-top: 5px;
@@ -750,7 +791,8 @@ input,
     width: 100%;
 }
 
-.btnEditar, .btnGuardar {
+.btnEditar,
+.btnGuardar {
     flex: 1;
     font-size: 14px;
     padding: 0.6em;

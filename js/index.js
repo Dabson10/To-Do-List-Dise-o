@@ -1,4 +1,4 @@
-import { loginUsuarios, crearUsuarios, crearTareas, usuarioTareas } from './api.js';
+import { loginUsuarios, crearUsuarios, crearTareas, usuarioTareas, editarTarea, cambiarEstadoT, datosUsuarioCambio } from './api.js';
 
 //Objeto que contendra los datos del usuario.
 const usuario = {
@@ -151,6 +151,43 @@ document.addEventListener('DOMContentLoaded', () => {
             maquetarTareas();
         });
     });
+    cambiarbtn();
+    actualizarDatosUsu();
+
+    // Persistencia de Sesión: Verifica si hay una sesión activa guardada
+    const sesion = localStorage.getItem("Sesion activa");
+    if (sesion) {
+        const sesionGuardada = JSON.parse(sesion);
+        // Poblamos el objeto usuario con los datos guardados
+        Object.assign(usuario, sesionGuardada);
+
+        // --- TRANSICIÓN VISUAL ---
+        const loginPanel = document.getElementById('panelLogIn');
+        const appPanel = document.getElementById('contPanelesP');
+        const panelPadre = document.getElementById('panelPadre');
+        const contTareas = document.getElementById('contTareas');
+
+        if (loginPanel) loginPanel.classList.add('ocultar');
+        if (appPanel) appPanel.classList.remove('cerrar');
+        if (panelPadre) panelPadre.classList.remove('cerrar');
+        if (contTareas) contTareas.classList.remove('cerrar');
+
+        // Ejecutamos las funciones necesarias para cargar la interfaz y tareas
+        if (typeof inDatosUsuario === "function") inDatosUsuario();
+        tarea(); // Esta función se encarga de descargar y maquetar las tareas
+    }
+
+    // Lógica para Cerrar Sesión (Móvil y Desktop)
+    const btnLogOut = document.getElementById('btnLogOut');
+    const btnLogOutD = document.getElementById('btnLogOutDesktop');
+
+    const realizarLogout = () => {
+        localStorage.removeItem("Sesion activa");
+        location.reload(); 
+    };
+
+    if (btnLogOut) btnLogOut.addEventListener('click', realizarLogout);
+    if (btnLogOutD) btnLogOutD.addEventListener('click', realizarLogout);
 });//Fin evento DOM
 
 async function crearTarea(formCrearTarea) {
@@ -173,7 +210,7 @@ async function crearTarea(formCrearTarea) {
             const datosTarea = guardarTareaJSON(tarea);
             console.log(datosTarea);
             const tareaCreate = await crearTareas(datosTarea);
-            console.log(tareaCreate);
+            // console.log(tareaCreate);
             listaTareas.push(tareaCreate);
             maquetarTareas();
 
@@ -188,9 +225,9 @@ async function tarea() {
     try {
         //contTarea
         let usuarioID = usuario.id_usuario;
-        console.log(usuarioID);
+        // console.log(usuarioID);
         const tareas = await usuarioTareas(usuarioID);
-        console.log(tareas)
+        // console.log(tareas)
         //Ahora creamos el contenedor de las diferentes tareas.
         for (let index in tareas) {
             listaTareas.push(tareas[index])
@@ -257,7 +294,21 @@ function maquetarTareas() {
         });
     });
 
-    // Lógica para el botón de Editar (Maquetado)
+    // Lógica para el botón de Editar(Maquetado)
+    const btnsEditar = document.querySelectorAll('.btnEditar');
+    btnsEditar.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const tarjeta = btn.closest('.contTarea');
+            tarjeta.classList.toggle('editando');
+            btn.textContent = tarjeta.classList.contains('editando') ? 'Cancelar' : 'Editar';
+        });
+    });
+    // cambiarTareas()
+    cambiarEstado()
+    actualizarTarea()
+}
+
+function cambiarTareas() {
     const btnsEditar = document.querySelectorAll('.btnEditar');
     btnsEditar.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -275,10 +326,11 @@ function generarHTMLTarea(tarea) {
             <div class="cabTarea">
                 <div class="contIzq">
                     <p>Tarea: <span class="texto-vista"><b>${tarea.nombre}</b></span>
-                        <input type="text" class="input-edit" value="${tarea.nombre}">
+                        <input type="text" class="input-edit" name="nombre" value="${tarea.nombre}">
+                        <input type="text" class="input-edit cerrar" name="id_tarea" value="${tarea.id_tarea}">
                     </p>
                     <p>Prioridad: <span class="texto-vista ${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
-                        <select class="input-edit selector-mini">
+                        <select class="input-edit selector-mini" name="prioridad">
                             <option value="Alta" ${tarea.prioridad === 'Alta' ? 'selected' : ''}>Alta</option>
                             <option value="Media" ${tarea.prioridad === 'Media' ? 'selected' : ''}>Media</option>
                             <option value="Baja" ${tarea.prioridad === 'Baja' ? 'selected' : ''}>Baja</option>
@@ -292,25 +344,112 @@ function generarHTMLTarea(tarea) {
             </div>
             <div class="contMasInfoTar cerrar" data-contTarea="${tarea.id_tarea}" id="contMasInfo">
                 <div class="fechas">
-                    <p>Creada: <span>${tarea.fecha_creacion}</span></p>
+                    <p>Creada: <span>${tarea.fecha_creacion}</span>
+                        <input type="date" name="fecha_creacion" class="input-edit" value="${tarea.fecha_creacion}" disabled>
+                    </p>
                     <p>Limite: <span class="texto-vista">${tarea.fecha_limite}</span>
-                       <input type="date" class="input-edit" value="${tarea.fecha_limite}">
+                       <input type="date" name="fecha_limite" min="${fechaActual()}" class="input-edit" value="${tarea.fecha_limite}">
                     </p>
                 </div>
                 <p>Descripción: <span class="texto-vista">${tarea.descripcion}</span>
-                   <textarea class="input-edit">${tarea.descripcion}</textarea>
+                   <textarea class="input-edit" name="descripcion">${tarea.descripcion}</textarea>
                 </p>
-                <p class="estado">Estado: <span class="${tarea.estado === 'Completada' ? 'baja' : 'alta'}">${tarea.estado}</span></p>
-                <div class="contAcciones">
-                    <button class="btnCambiarEstado">${esCompletada ? 'Desmarcar' : 'Completar'}</button>
+                <p class="estado">Estado: <span class="${tarea.estado === 'Pendiente' ? 'Cambiar' : 'alta'}">${tarea.estado}</span>
+                <input type="text" name="estado" class="input-edit" value="${tarea.estado}" disabled>
+                </p>
+                <div class="contAcciones" class="input-edit">
+                    <button class="btnCambiarEstado" id="btnCambiarEstado">${esCompletada ? 'Desmarcar' : 'Cambiar'}</button>
                     <button class="btnEditar">Editar</button>
-                    <button class="btnGuardar input-edit">Guardar</button>
+                    <button class="btnGuardar input-edit" name="btn" id="btnGuardar">Guardar</button>
                 </div>
             </div>
         </div>
     `;
 }
 
+async function cambiarEstado() {
+    const btnCambiar = document.querySelectorAll('.btnCambiarEstado');
+    btnCambiar.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const tarjeta = btn.closest('.contTarea');
+            const inputs = tarjeta.querySelectorAll('.input-edit');
+            const datos = {};
+            inputs.forEach(input => {
+                datos[input.name] = input.value;
+            });
+            delete datos.btn;
+            datos.id_usuario = usuario.id_usuario;
+            //Si el estado es 'Completado entonces no cambiamos'
+            if (datos.estado === 'Completada') {
+                panelError('Tarea completada');
+                return;
+            }
+            datos.estado = cambioEstado(datos.estado);
+            try {
+                listaTareas.length = 0;
+                const tareaEdit = formatTareaUpd(datos);
+                const tareaCambiada = await cambiarEstadoT(tareaEdit);
+                tarea();
+                if (datos.estado === 'Completada') {
+                    bienvenida(`Tarea: '${datos.nombre}' completada. !!!Felicidades.¡¡¡`)
+                }
+            } catch (error) {
+                panelError(error)
+            }
+        });
+    });
+}
+
+function cambioEstado(estado) {
+    let estadoC = estado;
+    if (estado === 'Pendiente' || estado === "pendiente") {
+        estadoC = 'Trabajando'
+    } else if (estado === "Trabajando" || estado === "trabajando") {
+        estadoC = "Completada"
+    }
+    return estadoC;
+}
+
+async function actualizarTarea() {
+    const btnGuardar = document.querySelectorAll('.btnGuardar');
+    btnGuardar.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const tarjeta = btn.closest('.contTarea');
+            const inputs = tarjeta.querySelectorAll('.input-edit');
+            const datos = {};
+            inputs.forEach(input => {
+                datos[input.name] = input.value;
+            });
+            delete datos.btn;
+            datos.id_usuario = usuario.id_usuario;
+            //Formateamos antes de enviar el JSON
+            const tareaEdit = formatTareaUpd(datos);
+            try {
+                listaTareas.length = 0;
+                const tareaCambiada = await editarTarea(tareaEdit);
+                console.log(tareaCambiada);
+                tarea();
+            } catch (error) {
+                panelError(error)
+            }
+        });
+    });
+}
+function formatTareaUpd(tarea) {
+    const actualizar = {
+        id_tarea: Number(tarea.id_tarea),
+        nombre: tarea.nombre,
+        descripcion: tarea.descripcion,
+        estado: tarea.estado,
+        prioridad: tarea.prioridad,
+        fecha_creacion: tarea.fecha_creacion,
+        fecha_limite: tarea.fecha_limite,
+        usuario: {
+            id: Number(tarea.id_usuario)
+        }
+    };
+    return actualizar;
+}//si recibo todos los datos
 
 /**
  * Función para cambiar entre secciones, ya sea entre Datos del Usuario, Crear tareas y ver tareas
@@ -335,6 +474,10 @@ function mostrarPanel(opciones, panel, panelPadre) {
                 panelPadre.classList.add('cerrar')
             }
             panel[indice].classList.remove('cerrar');
+
+            // Cierra el menú desplegable (útil para la versión móvil)
+            const contOpciones = document.getElementById('opciones');
+            if (contOpciones) contOpciones.classList.add('cerrar');
         });
     });
 }
@@ -419,7 +562,7 @@ function crearUsu(formSigIn, mensajeError) {
             guardarJSON(respuesta);
             // Ahora se hace la vista de la tarea nueva.
             tarea();
-            bienvenida();
+            bienvenida(`Hola, ${usuario.nombre}. Ahora podras registrar tus tareas pendientes.`);
         } catch (error) {
             // mensajeError.textContent = "Correo existente intente con otro";
             btnCrear.disabled = false;
@@ -428,13 +571,97 @@ function crearUsu(formSigIn, mensajeError) {
     })
 }
 
-function bienvenida() {
+function cambiarbtn() {
+    const btnHabilitar = document.getElementById('btnHabilitar');
+    const btnCambiar = document.getElementById('btnDatosUsu');
+    const inputs = document.querySelectorAll('.datUsuario');
+    btnHabilitar.addEventListener('click', () => {
+        if (btnCambiar.classList.contains('desactivado')) {
+            btnCambiar.classList.remove('desactivado');
+            btnCambiar.disabled = false;
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+            inputs[2].disabled = true;
+        } else {
+            btnCambiar.classList.add('desactivado');
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.value = '';
+            });
+            btnCambiar.disabled = true;
+            inputs[2].value = usuario.id_usuario;
+        }
+    });
+}
+
+
+
+async function actualizarDatosUsu() {
+    const btnCambiar = document.getElementById('btnDatosUsu');
+    const inputs = document.querySelectorAll('.datUsuario');
+    const formulario = document.getElementById('formCambioDat');
+
+    formulario.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const daat = new FormData(formulario)
+        const credenciales = Object.fromEntries(daat.entries());
+        for (let llave in credenciales) {
+            credenciales[llave] = credenciales[llave].trim();
+        }
+        //Ahora validamos que todos los datos esten llenos
+        const validado = validarInputs(credenciales);
+        if (validado) {
+            panelError("Rellene todos los campos.");
+            return;
+        }
+        const acceso = validarDatos(credenciales);
+        if (acceso == 0) {
+            panelError('Ingrese datos diferentes para poder actualizar.');
+            return
+        }
+        //Ahora que tenemos validado tanto inputs con algun valor y que sean diferentes a los guardados.
+        //Toca realizar la actualizacion.
+        try {
+            credenciales.id = usuario.id_usuario
+            const respuesta = await datosUsuarioCambio(credenciales);
+            usuario.nombre = respuesta.nombre;
+            usuario.apellido = respuesta.apellido;
+            inDatosUsuario();
+
+            btnCambiar.classList.add('desactivado');
+            inputs.forEach(input => {
+                input.value = '';
+                input.disabled = true;
+            });
+            bienvenida(`Datos cambiados ${respuesta.nombre}, ${respuesta.apellido}. Gracias!!!`)
+            //Ahora desactivamos los contenedores.
+
+        } catch (error) {
+            panelError(error);
+        }
+
+    });
+}
+function validarDatos(datos) {
+    const usuGuardado = { nombre: usuario.nombre, apellido: usuario.apellido };
+    const usuEdit = { nombre: datos.nombre, apellido: datos.apellido }
+    let cont = 0;
+    for (let clave in usuGuardado) {
+        if (usuGuardado[clave] !== usuEdit[clave]) {
+            cont = cont + 1;
+        }
+    }
+    return cont;
+}
+
+function bienvenida(dato) {
     const contAlerta = document.getElementById('contNuevo');
     const descErr = document.getElementById('usuarioBienvenida');
 
     if (contAlerta.classList.contains('cerrar')) {
         contAlerta.classList.remove('cerrar');
-        descErr.textContent = `${usuario.nombre}. Ahora podras registrar tus tareas pendientes.`;
+        descErr.textContent = dato;
     }
 }
 
@@ -471,7 +698,6 @@ function credencialesLog(formLog, mensajeError) {
         try {
             const respuesta = await loginUsuarios(credenciales);
             btnLog.disabled = true;
-            // console.log("Mandado: ", respuesta);
             guardarJSON(respuesta)
             //Funcion para quitar el login y mostrar el panel principal.
             tarea();
@@ -493,6 +719,7 @@ function guardarJSON(datosUsuario) {
     localStorage.setItem("Sesion activa", JSON.stringify(usuario));
     cambiarVista()
 }
+//Crea un objeto de tipo tarea para crear una tarea
 function guardarTareaJSON(tarea) {
     const tareaNueva = {
         usuario: {
@@ -546,6 +773,7 @@ function inDatosUsuario() {
     inNombre.placeholder = `${usuario.nombre}`;
     inApellido.placeholder = `${usuario.apellido}`;
     inIdUsu.placeholder = `${usuario.id_usuario}`;
+    inIdUsu.value = `${usuario.id_usuario}`;
     //Input de crear tareas
     tareaUsuId.placeholder = `${usuario.id_usuario}`;
     tareaUsuId.value = `${usuario.id_usuario}`;

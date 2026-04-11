@@ -1,9 +1,9 @@
 //URL para llamar a la api de tareas
-// const tareaURL = 'http://localhost:8081/tarea';
-const tareaURL = 'https://to-do-list-98xe.onrender.com/tarea';
+const tareaURL = 'http://localhost:8081/tarea';
+// const tareaURL = 'https://to-do-list-98xe.onrender.com/tarea';
 //URL para llamar a la api de usuarios
-// const usuarioURL = 'http://localhost:8081/usuario';
-const usuarioURL = 'https://to-do-list-98xe.onrender.com/usuario';
+const usuarioURL = 'http://localhost:8081/usuario';
+// const usuarioURL = 'https://to-do-list-98xe.onrender.com/usuario';
 
 
 
@@ -25,7 +25,6 @@ export async function loginUsuarios(credenciales) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credenciales)
     })
-    console.log(respuesta)
     if (!respuesta.ok) statusError(respuesta.status, 'Credenciales invalidas. Revisa tu correo o contraseña', 'Usuario')
     return await respuesta.json();
 }
@@ -52,12 +51,49 @@ export async function crearTareas(tarea) {
 export async function usuarioTareas(id_usuario) {
     const respuesta = await fetch(`${tareaURL}/usuario/${id_usuario}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application-json' },
+        headers: { 'Content-Type': 'application/json' },
     });
     const status = respuesta.status;
     if (!respuesta.ok) statusError(status, 'Usuario y tareas no encontrados.', 'Usuario y Tareas.')
     return await respuesta.json();
 }
+
+
+export async function editarTarea(tarea) {
+    const respuesta = await fetch(`${tareaURL}/editar`, {
+        method: "PUT",
+        headers: { "Content-Type": 'application/json' },
+        body: JSON.stringify(tarea)
+    });
+    const status = respuesta.status;
+    if (!respuesta.ok) statusError(status, "Tarea no editada", "Tarea");
+    return await respuesta.json();
+}
+
+
+export async function cambiarEstadoT(tarea) {
+    const respuesta = await fetch(`${tareaURL}/estado`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tarea)
+    });
+    const status = respuesta.status;
+    if (!respuesta.ok) statusError(status, "No se pudo cambiar el estado de la tarea", 'Tarea');
+    return await respuesta.json();
+}
+
+export async function datosUsuarioCambio(credenciales) {
+    const respuesta = await fetch(`${usuarioURL}/editar`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credenciales)
+    });
+    const status = respuesta.status;
+    if (!respuesta.ok) statusError(status, "No se realizo el cambio de datos.", "Usuario");
+    return await respuesta.json();
+}
+
+
 /**
  * Metodo que se encarga de manejar los errores de estado, recibe 3 parametros
  * status, causa y entidad 
